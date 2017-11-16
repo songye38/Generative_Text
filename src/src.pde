@@ -32,6 +32,14 @@ void setup()
   art = loadTable("art.csv", "header");
   tech = loadTable("technology.csv", "header");
   originalText = loadTable("data.csv","header");
+  GenerativeChar char1 = new GenerativeChar('안',30,30);
+  char1.setFont(30);
+  char1.setTransparency(225);
+  //char1.drawChar();
+  String text = "모든 국민은 법 앞에 평등하다.모든 국민은 신속한 재판을 받을 권리를 가진다.모든 국민은 신체의 자유를 가진다.대통령의 국법상 행위는 문서로써 하며.";
+  GenerativeString string1 = new GenerativeString(text,30,30,500,900);
+  string1.drawString();
+  
 }
 
 void draw()
