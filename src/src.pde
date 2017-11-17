@@ -1,48 +1,9 @@
 
-
-//전역변수들 
-Table humanity;
-Table art;
-Table tech;
-PFont font;
-Table originalText;
-
-String humanityText[];
-String artText[];
-String techText[];
-
-//이렇게 각각 분야별로 텍스트를 나누는 건 개발을 할 때 별로 좋은 건 아닌 것 같다 
-//그냥 type으로 텍스트의 분야를 나누고 모든 텍스트를 하나의 파일에 담는게 좋은 것 같다 
-
-String resultString[];
-  int x = width;
-
-
-//내가 해야할 것은 무엇인가?
-//각 csv파일의 총 열을 구하기(길이 구하기)
-//그 길이를 바탕으로 (seed) random value구하기
-//위에서 구한 random value를 기반으로 이 값에 해당하는 row의 text를 가져와서 
-//총 세개의 텍스트를 하나의 텍스트로 만들어주기 
-
-//테이블을 가져오는 것을 좀 더 편리하게 해줘야 되지 않을까
-//테이블에 있는 값을 가져오는 것보다 차라리 그냥 일반 텍스트를 가져온 다음에 그걸 .을 기준으로 잘라서 테이블로 만들면 어떨까
-
 void setup()
 {
   size(600,600);
   background(0);
-  humanity = loadTable("humanity.csv", "header");
-  art = loadTable("art.csv", "header");
-  tech = loadTable("technology.csv", "header");
-  originalText = loadTable("data.csv","header");
-  GenerativeChar char1 = new GenerativeChar('안',30,30);
-  char1.setFont(30);
-  char1.setTransparency(225);
-  //char1.drawChar();
-  String text = "모든 국민은 법 앞에 평등하다.모든 국민은 신속한 재판을 받을 권리를 가진다.모든 국민은 신체의 자유를 가진다.대통령의 국법상 행위는 문서로써 하며.";
-  GenerativeString string1 = new GenerativeString(text,30,30,500,900);
-  string1.drawString();
-  
+  loadTextByString(loadText("art.txt"));
 }
 
 void draw()
@@ -51,146 +12,67 @@ void draw()
 }
 
 
-
-//nLines -> number of Lines you want to display
-void printFuzzyText(int nLines)
+//하나의 전체 텍스트를 입력 받으면 그걸 한 문장 단위로 쪼개기 
+void divide_to_char(String textOriginal)
 {
+  //근데 이걸 한 문장 단위로 쪼갤 수가 있나?
+  int stringLength = textOriginal.length();
   
+  char[] oneChar = new char[stringLength];
   
-int lengthOfHuman = humanity.getRowCount();
-int lengthOfArt = art.getRowCount();
-int lengthOfTech = tech.getRowCount();
-
-
-  
-  for(int i=0; i<nLines; i++)
+  for(int i=0; i<stringLength; i++)
   {
-    int humanRandomValue = int(random(lengthOfHuman));
-    int artRandomValue = int(random(lengthOfArt));
-    int techRandomValue = int(random(lengthOfTech));
-    
-    //merge all three string into resultString
-    //and then print it to displays 
-    resultString[0] = humanity.getString(humanRandomValue,"text");
-    resultString[1] = tech.getString(techRandomValue,"text");
-    resultString[2] = art.getString(artRandomValue,"text");
-    
-    int lengthOfText = (humanity.getString(humanRandomValue,"text")).length();
-    
-    
-    //randomTextSize = int(random(10,15));
-    //textSize(randomTextSize);
-    
-    //text_align(2);
-    //draw_underLine(lengthOfText);
-    //text(resultString,30,10,550,550);
-    
-    //print to console 
-    //print(humanity.getString(humanRandomValue,"text"));
-    //print(tech.getString(techRandomValue,"text"));
-    //println(art.getString(artRandomValue,"text"));
-  } 
-}
-
-//여기서의 n은 내가 바꾸고 싶은 정도 
-//즉 n이 커질수록 텍스트의 정렬도가 낮아진다 
-void text_align(int n)
-{
-  //내가 선택한 값만큼의 랜덤 크기를 가지고 이걸 바탕으로 텍스트를 정렬하면 좋을텐데...
-  int textAlignRandomValue = int(random(-n,n));
-}
-//이런식으로 하면 대각선의 빨간선이 생기는데 
-//우선은 이걸 좀 여러개 만들어 보자 -> 랜덤하게
-//그리고 텍스트가 동적으로 생성되는 동안 이 빨간선도 생성되게 만들어보자 
-//그냥 그려지는 것이 아니라 생성되도록 만들어보자 
-//입력값으로 한 문장의 길이를 입력받아서 그걸 바탕으로 라인을 그려보면 어떨까?
-
-void draw_underLine()
-{
-  stroke(255);
-  line(0,0,width/2,height/2);
-}
-void draw_underLine(int length)
-{
-  int startPointWidth = int(random(0,length));
-  int startPointHeight = int(random(0,length));
-  int randomValueWidth = int(random(-length,0));
-  int randomValueHeight = int(random(0,length));
-  stroke(255,0,0);
-  line(startPointWidth,startPointHeight,randomValueWidth,randomValueHeight);
-}
-
-//함수를 이용해서 텍스트를 좀 더 다양하게 표현해보자
-//1. 밑줄을 단어 중간 중간에 넣어보자 
-//2. 단어의 색깔을 바꿔보면 어떨까?
-//3. 마우스 인풋에 따라 시작점을 바꿔주는 텍스트는 어떨까?
-//이렇게 바꾼 기능들을 화면안에 있는 gui로 바꾸도록 만들어주기 
-//
-
-//pdf로 저장하기 
-
-
-//글자를 draw()안에서 한 글자씩 출력해보기 
-void printByChar()
-{
-  int index =0;
-  int lengthOfResultString = resultString.length;
-  for(int i=0; i<lengthOfResultString; i++)
-  {
-  
-    textAlign(LEFT);
-    textSize(16);
-    text(resultString[index],x,100);
-    
-    // Decrement x
-    x = x - 3;
-
-  // If x is less than the negative width, 
-  // then it is off the screen
-  float w = textWidth(resultString[index]);
-  if (x < -w) {
-    x = width; 
-    index = (index + 1) % resultString.length;
+    if(textOriginal.charAt(i)!='.')
+    {
+      oneChar[i] = textOriginal.charAt(i);
+    }
+    else
+    {
+      oneChar[i] = '\n';
+    }
   }
-  } 
-}
-
-//csv파일에 있는 텍스트들을 가져와서 String[]에 담아두기 
-void init_text(Table data)
-{
-  int lenOfTableRow = getTableRowCount(data);
-  for(int i=0; i<lenOfTableRow; i++)
+  for(int i=0; i<stringLength; i++)
   {
-    int index = data.getInt(i,"type");
-    if(index==1)
-    {
-      artText[i] = data.getString(i,"text");
-    }
-    else if(index==2)
-    {
-      humanityText[i] = data.getString(i,"text");
-    }
-    else if(index==3)
-    {
-      techText[i] = data.getString(i,"text");
-    }
-  } 
+    print(oneChar[i]);
+  }
 }
 
-void init_font()
+
+//이런식으로 텍스트를 가져오면 거의 문단 단락별로 텍스트가 들어오는구나 
+String[] loadText(String filename)
 {
-  font = createFont("Verdana",10);
-  textFont(font);
+  String[] content = loadStrings(filename);
+  return content;
+  //ex) String[0] -> 첫번째 단락
+  //ex) String[1] -> 두번째 단락 
+}
+void loadTextByString(String[] content)
+{
+  int sizeOfContent = content.length;
+ // String[] stringContent = new String[sizeOfContent];
+  for(int i=0; i<sizeOfContent; i++)
+  {
+    divide_to_char(content[i]);
+  }
+  
+  //print(sizeOfContent);
 }
 
-void getStringLength()
+void loadTextByWord(String[] content)
 {
   
 }
 
-//테이블의 열의 개수를 반환하는 함수 
-int getTableRowCount(Table table)
+void loadTextByChar(String[] content)
 {
-  int length = table.getRowCount();
-  return length;
+  int sizeOfContent = content.length;
+  for(int i=0; i<sizeOfContent; i++)
+  {
+    divide_to_char(content[i]);
+  }
 }
+
+
+//텍스트를 가져와서 단락별로 있는 내용들을 한 문장 단위로 쪼개기
+//한 단어별로 쪼개기
+//한 글자 단위로 쪼개기 
