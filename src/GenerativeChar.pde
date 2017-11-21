@@ -6,8 +6,6 @@
 //글자의 색상 값
 //글자의 폰트는 어떤걸로?
 
-String text = "모든 국민은 법 앞에 평등하다.모든 국민은 신속한 재판을 받을 권리를 가진다.모든 국민은 신체의 자유를 가진다.대통령의 국법상 행위는 문서로써 하며.";
-int text_length = text.length();
 
 class GenerativeChar
 {
@@ -69,9 +67,13 @@ class GenerativeChar
   {
     posY = y;
   }
-  //하나의 문자를 찍는 함수 특정 위치에 
+  //하나의 문자를 찍는 함수 특정 위치에 가장 기본적인 함수
   void drawChar()
   {
       text(mainChar,posX,posY);    
   } 
+  void drawChar(int pageWidth, int pageHeight)
+  {
+    
+  }
 }
