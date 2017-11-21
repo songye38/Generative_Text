@@ -11,6 +11,7 @@ String[] dividedString;
 String[] dividedWord;
 char[] dividedChar;
 
+int i=0;
 
 
 //하나의 텍스트를 기준으로 만들기 
@@ -24,13 +25,17 @@ void setup()
   
   initGenerativeString(dividedString);
   initGenerativeWord(dividedWord);
-  frameRate(1);
+  initGenerativeChar(dividedChar);
+  
+  frameRate(10);
   
 }
 
 void draw()
 {
-  drawString(dividedString);
+  //drawString(dividedString);
+  drawChar(dividedChar,i);
+  i++;
 }
 
 //하나의 전체 텍스트를 입력 받으면 그걸 한 문장 단위로 쪼개기 
@@ -161,11 +166,18 @@ void drawString(String[] dividedString)
     textArray[i].drawString();
   }
 }
+/***********************************************************
+void setCharPos(int i)
+{
+    int randomX = int(random(10,width));
+    int randomY = int(random(10,height));
+    charArray[i].setPosX(randomX);
+    charArray[i].setPosY(randomY);
+}
 
-
-
-//텍스트를 가져와서 단락별로 있는 내용들을 한 문장 단위로 쪼개기
-//한 단어별로 쪼개기
-//한 글자 단위로 쪼개기 
-
+void drawChar(int i)
+{
+    charArray[i].drawChar();
+}
+***************************************************************/
 //1. 문자건 단어이건 문장이건간에 하이튼 한 글자씩 차례로 찍히는 함수를 생성해보기 -> 각각의 클래스에 
