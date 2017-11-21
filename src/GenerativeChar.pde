@@ -29,6 +29,11 @@ class GenerativeChar
   
   PFont font;
   
+  GenerativeChar(char GenerativeChar)
+  {
+    mainChar = GenerativeChar;
+  }
+  
   GenerativeChar(char GenerativeChar, int x, int y)
   {
     mainChar = GenerativeChar;
