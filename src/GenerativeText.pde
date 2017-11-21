@@ -9,6 +9,7 @@
 
 class GenerativeString 
 {
+  
   String mainString ="";
   int fontRedColor =0;
   int fontGreenColor =0;
@@ -25,7 +26,15 @@ class GenerativeString
   
   int fontSize =0;
   
+  int totalLength =0;
+  
   PFont font;
+  
+  
+  GenerativeString(String GenerativeString)
+  {
+    mainString = GenerativeString;
+  }
   
   GenerativeString(String GenerativeString,int startX, int startY, int endX, int endY)
   {
