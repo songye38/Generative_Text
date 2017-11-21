@@ -31,6 +31,11 @@ class GenerativeWord
   
   PFont font;
   
+  GenerativeWord(String GenerativeWord)
+  {
+    word = GenerativeWord;
+  }
+  
   GenerativeWord(String GenerativeWord,int x, int y)
   {
     word = GenerativeWord;
