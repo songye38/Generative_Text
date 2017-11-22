@@ -27,14 +27,15 @@ void setup()
   initGenerativeWord(dividedWord);
   initGenerativeChar(dividedChar);
   
-  frameRate(10);
+  frameRate(1);
   
 }
 
 void draw()
 {
-  //drawString(dividedString);
-  drawChar(dividedChar,i);
+  
+  setStringBoundingBox(dividedString);
+  drawString(i);
   i++;
 }
 
@@ -153,7 +154,7 @@ void initGenerativeChar(char[] chars)
   }
 }
 
-void drawString(String[] dividedString)
+void setStringBoundingBox(String[] dividedString)
 {
   int num = dividedString.length;
   for(int i=0; i<num; i++)
@@ -163,10 +164,14 @@ void drawString(String[] dividedString)
     int endX = int(random(width/2,width));
     int endY = int(random(height/2,height));
     textArray[i].setBoundingBox(randomX,randomY,endX,endY);
-    textArray[i].drawString();
   }
 }
-/***********************************************************
+
+void drawString(int i)
+{
+    textArray[i].drawString();
+}
+
 void setCharPos(int i)
 {
     int randomX = int(random(10,width));
@@ -175,9 +180,20 @@ void setCharPos(int i)
     charArray[i].setPosY(randomY);
 }
 
-void drawChar(int i)
-{
-    charArray[i].drawChar();
-}
-***************************************************************/
-//1. 문자건 단어이건 문장이건간에 하이튼 한 글자씩 차례로 찍히는 함수를 생성해보기 -> 각각의 클래스에 
+/* 2017.11.22 
+*
+*/
+
+//void drawStringWithinBox(String[] dividedString)
+//{
+//  int num = dividedString.length;
+//  for(int i=0; i<num; i++)
+//  {
+//    int widthOfString = textArray[i].getNumOfCharsInString();
+//    if(widthOfString>width)
+//    {
+//      textArray[i].
+//    }
+    
+//  }
+//}
