@@ -1,12 +1,4 @@
-
-
-// 필요한 변수들
-// 그러니까 이 클래스를 가지고 생성을 하면 하나의 단어를 생성할 수 있다 
-// 한 단어의 높이와 너비  -> 이건 내가 비트맵으로 글자를 만들어봐야 알 수 있지 않을까?
-// 단어의 위치값 
-//단어의  색상 값
-//단어의 폰트는 어떤걸로?// 필요한 변수들
-
+//한 문장씩 차례대로 출력되는 함수 만들기 
 class GenerativeString 
 {
   
@@ -31,11 +23,16 @@ class GenerativeString
   PFont font;
   
   
+  //기본 생성자 정의 
   GenerativeString(String GenerativeString)
   {
     mainString = GenerativeString;
+    font = createFont("Verdana",32);
+    textFont(font);
+    textSize(20);
   }
   
+  //바운딩 박스까지 포함한 생성자 정의 
   GenerativeString(String GenerativeString,int startX, int startY, int endX, int endY)
   {
     mainString = GenerativeString;
@@ -85,6 +82,43 @@ class GenerativeString
   {
       text(mainString,boundingBox_startX,boungdingBox_startY,boundingBox_endX,boundingBox_endY);    
   } 
+  void drawString(int startX, int startY, int endX, int endY)
+  {
+     text(mainString,startX,startY,endX,endY);    
+  } 
+
+  
+  //단어의 개수가 아닌 폰트의 너비를 포함한 실질적인 문장의 길이(시각적 길이)
+  int getLengthOfString()
+  {
+    int num = getNumOfCharsInString();
+    char[] charArray = new char[num];
+    
+    int totalLength =0;
+    for(int i=0; i<num; i++)
+    {
+      totalLength = (int)textWidth(charArray[i]);
+    }
+    
+    return totalLength;
+  }
+  int getNumOfCharsInString()
+  {
+    int num = mainString.length();
+    return num;
+  }
+  
+  //한 문장의 길이를 알기 위해서는 한 문장의 몇개의 char가 들어 있는지 알아야 한다 
+  //생성된 한 문장의 단어들 각각의 너비를 총 더한 값을 함수로 만들어서 리턴해주기 
+  
+  //이 부분부터는 메인 함수에서 만들어야 될 것 같다 
+  //한 문장의 전체 길이와 페이지의 너비를 비교해서 한 문장을 길게 늘여놓았을 때 그 길이가 페이지의 너비보다 길다면
+  //특정 단어부터 잘라서 다음 줄로 이동시키기 
+  //이때 제일 마지막 문장까지의 전체 높이를 구해서
+  //다음 문장의 시작 y값으로 해주기 
+  //이렇게 해서 한 페이지의 전체 높이만큼의 y가 차게 되면 다음 페이지에 있던 내용들을 지워주고 새로 그려주기 
+  
+  
 }
 
 
