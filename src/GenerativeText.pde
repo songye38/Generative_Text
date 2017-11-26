@@ -86,6 +86,29 @@ class GenerativeString
   {
      text(mainString,startX,startY,endX,endY);    
   } 
+  //int startOffset()
+  //{
+  //  int x;
+  //  x = 
+  //  return x;
+  //}
+  //void drawStringByLine(int screenWidth, int screenHeight)  //전체 화면의 너비와 높이를 매개변수로 주기
+  //{
+  //  //한 문장의 단어의 개수는 몇개일까?
+  //  //그 단어의 개수 x 한 글자의 너비 -> 전체 문장의 너비구해주기 
+  //  int length = getLengthOfString();
+  //  int totalLength =0;
+  //     for(int i=0; i<getNumOfCharsInString(); i++)
+  //     {
+  //       char eachChar = mainString.charAt(i);
+  //       totalLength += textWidth(eachChar);
+  //       if(totalLength>width){
+           
+  //       }
+  //     }
+      
+  //  //한 문장의 오프셋을 반환하는 함수 만들기 -> 다음 문장은 이 오프셋 값을 받아서 이 오프셋 다음 위치에 찍어주기
+  //}
 
   
   //단어의 개수가 아닌 폰트의 너비를 포함한 실질적인 문장의 길이(시각적 길이)
@@ -116,21 +139,11 @@ class GenerativeString
   //특정 단어부터 잘라서 다음 줄로 이동시키기 
   //이때 제일 마지막 문장까지의 전체 높이를 구해서
   //다음 문장의 시작 y값으로 해주기 
-  //이렇게 해서 한 페이지의 전체 높이만큼의 y가 차게 되면 다음 페이지에 있던 내용들을 지워주고 새로 그려주기 
-  
-  
+  //이렇게 해서 한 페이지의 전체 높이만큼의 y가 차게 되면 다음 페이지에 있던 내용들을 지워주고 새로 그려주기   
 }
 
+//문장을 순서대로 차례차례 출력하는 것을 어떻게 만들면 좋을까?
+//text단위로 출력되는게 맞을까 아니면 char단위로 출력되고 끝을 만나면 다음 문장으로 넘어가게 하는게 맞을까?
 
-//void draw()
-//{
-//  String s = "Lorem ipsum dolor sit amet, enim placerat consectetuer et sociosqu fusce luctus. Mauris rerum auctor, eget aliquam, ultrices orci sed id orci etiam in. Justo vitae pede arcu tristique libero, hac ultricies, scelerisque elit sed ac eu suspendisse aliquam. Luctus urna, egestas lorem justo. Natoque ante in sit. Sodales scelerisque est scelerisque, congue pellentesque, tellus est quis ipsum arcu, est proin. Morbi augue ut sit vitae feugiat, velit risus, eget montes nec vestibulum tempus elit habitant. Justo turpis et hymenaeos, senectus ipsum elit ac.Ipsum mauris sit volutpat ante ipsum turpis, et nec. Sit odio. Quo dolor elementum non sit, odio ac feugiat sit dolor sit commodo, nulla consequat pede velit aliquam ipsum. Elit euismod at erat euismod, non risus, nullam sit aenean vel et ipsum tellus, velit morbi accumsan volutpat mi luctus. A ultrices. Adipiscing aliquam blandit in, in justo, tincidunt auctor praesent mattis quam, amet nulla ullamcorper sit massa. Saepe neque massa elit curabitur lectus. Placerat est vestibulum vestibulum, fames purus, pede elit nam aenean sit tortor, aliquet urna cras purus dis fermentum, neque metus eu.Vehicula nonummy, elit dictum augue nulla diam, quam vulputate cras nibh non, in sed adipiscing quam, porttitor at eget. Dignissim vestibulum donec malesuada cubilia, gravida interdum donec amet sit tempus felis, nunc mauris. Mollis duis lectus et eros pede mauris, amet feugiat auctor eget curabitur dui sed, mattis magna in dui lobortis. Sit lacus consequat ut, tortor eleifend justo vitae nibh pellentesque, mauris dolorem sodales mauris integer et. Sit suspendisse wisi dolor, vestibulum semper ut sed sit non mauris, ad dui felis odio mattis eget, in magna augue sed. Curabitur ultrices magna mi nisl vitae torquent, nisl elit a tempus lectus accumsan, vitae felis velit libero suspendisse cras.At nunc mauris aliquam. Massa sed lorem suspendisse urna, ut aliquam, ut luctus pede libero ipsum mollis ante. In ut sapien. Lorem id, ornare ut magna quis ornare. Massa quasi tellus gravida ut nam, duis libero, porttitor tellus.";
-//  int startX = (int)random(0,900);
-//  int startY = (int)random(0,900);
-//  int endX = (int)random(startX,900);
-//  int endY = (int)random(startY,900);
-//  setRandomFontSize();
-//  setRandomFont();
-//  setRandomTextColor();
-//  text(s, startX,startY, endX,endY);  // Text wraps within text box
-//}
+/* 2017.11.25 text에서는 한 페이지에 하나씩 출력되도록 해보기 -> 이렇게 해서 문장을 구성해보면 어떨까?
+*/
