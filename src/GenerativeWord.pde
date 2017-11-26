@@ -1,15 +1,6 @@
 
 
-//한 단어 -> 안녕 / 사랑 / 바보 
-//단어 + 어미 -> 사랑해 
-
-// 필요한 변수들
-// 그러니까 이 클래스를 가지고 생성을 하면 하나의 단어를 생성할 수 있다 
-// 한 단어의 높이와 너비  -> 이건 내가 비트맵으로 글자를 만들어봐야 알 수 있지 않을까?
-// 단어의 위치값 
-//단어의  색상 값
-//단어의 폰트는 어떤걸로?// 필요한 변수들
-
+//이 클래스를 이용해서 단어에 밑줄을 긋거나 단어를 다른 단어로 바꾸거나 하는 것들이 필요하다 
 class GenerativeWord 
 {
   String word ="";
@@ -73,8 +64,12 @@ class GenerativeWord
   }
 
   //하나의 문자를 찍는 함수 특정 위치에 
-  void drawString()
+  void drawWord()
   {
       text(word,posX,posY);    
   } 
+  void drawWord(int x,int y)
+  {
+    text(word,x,y);
+  }
 }
