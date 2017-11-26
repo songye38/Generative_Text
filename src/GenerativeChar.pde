@@ -1,12 +1,4 @@
 
-// 필요한 변수들
-// 한 글자의 unicode 값
-// 한 글자의 높이와 너비  -> 이건 내가 비트맵으로 글자를 만들어봐야 알 수 있지 않을까?
-// 글자의 위치값 
-//글자의 색상 값
-//글자의 폰트는 어떤걸로?
-
-
 class GenerativeChar
 {
   char mainChar =0;
@@ -19,17 +11,19 @@ class GenerativeChar
   int posY =0;
   
   int charWidth =0;
-  int charHeight =0;
-  
-  int charLength =0;
-  
   int fontSize =0;
+ 
+  int charLength =0;
   
   PFont font;
   
   GenerativeChar(char GenerativeChar)
   {
     mainChar = GenerativeChar;
+    font = createFont("Verdana",32);
+    textFont(font);
+    textSize(20);
+    setFontSize(20);
   }
   
   GenerativeChar(char GenerativeChar, int x, int y)
@@ -67,13 +61,32 @@ class GenerativeChar
   {
     posY = y;
   }
+  void setCharWidth()
+  {
+     charWidth = (int)textWidth(mainChar);
+  }
+  float getCharWidth()
+  {
+    float width = textWidth(mainChar);
+    return width;
+  }
+  int getFontSize()
+  {
+    int size = fontSize;
+    return size;
+  }
+  
   //하나의 문자를 찍는 함수 특정 위치에 가장 기본적인 함수
   void drawChar()
   {
       text(mainChar,posX,posY);    
   } 
-  void drawChar(int pageWidth, int pageHeight)
+  void drawChar(int x, int y)
   {
-    
+    text(mainChar,x,y);
+  }
+   void drawChar(float x, int y)
+  {
+    text(mainChar,x,y);
   }
 }
