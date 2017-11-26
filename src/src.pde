@@ -12,12 +12,27 @@ String[] dividedWord;
 char[] dividedChar;
 
 int i=0;
+int mouseStatus =0;
+
+int rectX = 10;
+int rectY = 10;
+int rectWidth = 80;
+int rectHeight = 20;
+boolean rectStatus = false;
+String content = "choose file";
+int textSize =15;
+color baseColor = color(255,255,255);
+color clickColor = color(255,0,0);
+
+String filepath = "";
+
+
 
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
 {
-  size(600,600);
+  size(1200,600);
   background(0);
   loadTextByString(loadText("art.txt"));
   loadTextByWord(loadText("art.txt"));
@@ -27,16 +42,38 @@ void setup()
   initGenerativeWord(dividedWord);
   initGenerativeChar(dividedChar);
   
-  frameRate(1);
+  frameRate(1);  //1초당 한 프레임 
+  //printPageNum();
   
 }
 
 void draw()
 {
+  update();
+  if(rectStatus) fill(clickColor);
+  else fill(baseColor);
+  rect(rectX,rectY, rectWidth,rectHeight);
+  fill(255,255,255);
+  if(filepath!="")
+  {
+    loadTextByString(loadText(filepath));
+  loadTextByWord(loadText(filepath));
+  loadTextByChar(loadText(filepath));
   
-  setStringBoundingBox(dividedString);
-  drawString(i);
-  i++;
+  initGenerativeString(dividedString);
+  initGenerativeWord(dividedWord);
+  initGenerativeChar(dividedChar);
+  
+  drawCharByLine();
+  }
+  
+  
+  
+  
+  //setStringBoundingBox(dividedString);
+  //drawString(i);
+  
+  //i++;
 }
 
 //하나의 전체 텍스트를 입력 받으면 그걸 한 문장 단위로 쪼개기 
@@ -179,11 +216,82 @@ void setCharPos(int i)
     charArray[i].setPosX(randomX);
     charArray[i].setPosY(randomY);
 }
+void drawCharByLine()
+{
+  int length = dividedChar.length;
+  int offsetY =20 + rectY + rectHeight;
+  float totalLength =0;
+  for(int i=0; i<length; i++)
+  {
+    totalLength += charArray[i].getCharWidth();
+    
+    if(totalLength<width-20){
+      charArray[i].drawChar(totalLength,offsetY);
+    }
+    else
+    {
+      offsetY +=(charArray[i].getFontSize())*2;
+      totalLength = 0;
+      charArray[i].drawChar(totalLength,offsetY); 
+      //println(offsetY);
+      //if(offsetY>height-(charArray[i].getFontSize())*2)
+      // {
+      //  offsetY = 20;
+      //  charArray[i].setFontColor(100,20,100);
+      //  charArray[i].drawChar(totalLength,offsetY); 
+      //}
+    }
+  }
+}
+//int getTotalOffsetY()
+//{
+//  int length = dividedChar.length;
+//  int offsetY =20;
+//  float totalLength =0;
+//  int totalOffset =0;
+//  for(int i=0; i<length; i++)
+//  {
+//    totalLength += charArray[i].getCharWidth();
+    
+//    if(totalLength>width-20)
+//    {
+//      offsetY +=(charArray[i].getFontSize())*2;
+      
+//    }
+//  }
+//  return offsetY;
+ 
+ 
+//}
+//int getPageNum()
+//{
+//  int ypos = height-40;
+//  int xpos = width/2;
+//  int num = (getTotalOffsetY()/ypos);
+//  //println(getTotalOffsetY());
+//  //println(ypos);
+//  return num;
+  
+//  //총 몇페이지에 나눠서 텍스트 전체를 표시할 수 있는가?
+//  //height and offsetY 
+//}
+//void printPageNum()
+//{
+//  int content = getPageNum();
+//  String c = str(content);
+//  //char char_content = content.charAt(0);
+//  text(c, width/2, height-40);
+//}
+
 
 /* 2017.11.22 
 *
 */
 
+//void mousePressed()
+//{
+//  mouseStatus =1;
+//}
 //void drawStringWithinBox(String[] dividedString)
 //{
 //  int num = dividedString.length;
@@ -197,3 +305,43 @@ void setCharPos(int i)
     
 //  }
 //}
+void mousePressed()
+{
+  if(rectStatus){
+    selectInput("Select a file to process:", "fileSelected");
+  }
+  else {
+    //아니라면 아무것도 일어나지 않는다 
+  }
+}
+
+void update()
+{
+  if(clickRect(rectX,rectY,rectWidth,rectHeight)){
+    rectStatus = true;
+  }
+  else {
+    rectStatus = false;
+  }
+}
+
+boolean clickRect(int x, int y, int width, int height)
+{
+    if (mouseX >= x && mouseX <= x+width && 
+      mouseY >= y && mouseY <= y+height) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void fileSelected(File selection)
+{
+  if(selection==null){
+    println("window was closed or the user hit cancel");
+  }
+  else {
+    println(selection.getAbsolutePath());
+    filepath = selection.getAbsolutePath();
+  }
+}
