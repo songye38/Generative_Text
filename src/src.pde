@@ -34,14 +34,6 @@ void setup()
 {
   size(600,400);
   background(255,255,255);
-  loadTextByString(loadText("art.txt"));
-  loadTextByWord(loadText("art.txt"));
-  loadTextByChar(loadText("art.txt"));
-  
-  initGenerativeString(dividedString);
-  initGenerativeWord(dividedWord);
-  initGenerativeChar(dividedChar);
-  
   frameRate(1);  
 }
 
@@ -73,38 +65,8 @@ void draw()
   }
 }
 
-//하나의 전체 텍스트를 입력 받으면 그걸 한 문장 단위로 쪼개기 
-char[] divide_to_char(String textOriginal)
-{
-  //근데 이걸 한 문장 단위로 쪼갤 수가 있나?
-  int stringLength = textOriginal.length();
-  
-  char[] oneChar = new char[stringLength];
-  
-  for(int i=0; i<stringLength; i++)
-  {
-    if(textOriginal.charAt(i)!='.')
-    {
-      oneChar[i] = textOriginal.charAt(i);
-    }
-    else
-    {
-      oneChar[i] = '\n';
-    }
-  }
-  //for(int i=0; i<stringLength; i++)
-  //{
-  //  print(oneChar[i]);
-  //}
-  return oneChar;
-}
 
-
-//원래 loadStrings를 하면 엔터를 기준으로 단락별로 텍스트가 들어온다
-//단락별로 텍스트가 들어오면 처리하기 까다롭다
-//그냥 문단 구별 없이 하나의 텍스트를 입력받자
-//최종 하나의 텍스트는 finalContent라 하자 
-//-------------------------- load text --------------------------//
+//-------------------- load text --------------------//
 String loadText(String filename)
 {
   String[] content = loadStrings(filename);
@@ -112,24 +74,8 @@ String loadText(String filename)
   return finalContent;
 }
  
-//int getTextLength(String filename) 
-//{
-//  int totalNumOfChar = loadText(filename).length();
-//  return totalNumOfChar;
-//}
-//int getNumOfChar(String content)
-//{
-//  int length = content.length();
-//  //int index=0;
-//  //while(content.charAt(index)!='\n')
-//  //{
-//  //  length++;
-//  //  index++;
-//  //}
-//  return length;
-//}
-
-//---------------------------from file to variable load data------------------// 
+ 
+//------------------from file to variable load data------------// 
 int loadTextByString(String content)
 {
   dividedString = split(content,'.');
