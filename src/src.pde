@@ -1,4 +1,13 @@
+// ---------------imports---------------------//
+import processing.pdf.*;
+import java.util.Calendar;
 
+
+/* exploring text
+*  f                 :text file input
+*  p                 :save pdf
+*  s                 :save png
+*/
 
 //글자와 단어 그리고 문장을 담을 배열들 
 GenerativeChar[] charArray;
@@ -6,34 +15,25 @@ GenerativeWord[] wordArray;
 GenerativeString[] textArray;
 
 
-//처음의 텍스트에서 각각의 단위로 자른 내용을 넣을 변수 
+//-------------------- variable array to save loaded data----------------// 
 String[] dividedString;
 String[] dividedWord;
 char[] dividedChar;
 
-int i=0;
-int mouseStatus =0;
 
-int rectX = 10;
-int rectY = 10;
-int rectWidth = 80;
-int rectHeight = 20;
-boolean rectStatus = false;
-String content = "choose file";
-int textSize =15;
-color baseColor = color(255,255,255);
-color clickColor = color(255,0,0);
-
+//------------------ initial parameters and declaration-----------------//
 String filepath = "";
 
 
+//------------ text output ----------------------
+boolean savePDF = false;
 
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
 {
-  size(1200,600);
-  background(0);
+  size(600,400);
+  background(255,255,255);
   loadTextByString(loadText("art.txt"));
   loadTextByWord(loadText("art.txt"));
   loadTextByChar(loadText("art.txt"));
@@ -42,38 +42,35 @@ void setup()
   initGenerativeWord(dividedWord);
   initGenerativeChar(dividedChar);
   
-  frameRate(1);  //1초당 한 프레임 
-  //printPageNum();
-  
+  frameRate(1);  
 }
 
 void draw()
 {
-  update();
-  if(rectStatus) fill(clickColor);
-  else fill(baseColor);
-  rect(rectX,rectY, rectWidth,rectHeight);
-  fill(255,255,255);
+  fill(0);
   if(filepath!="")
   {
     loadTextByString(loadText(filepath));
-  loadTextByWord(loadText(filepath));
-  loadTextByChar(loadText(filepath));
-  
-  initGenerativeString(dividedString);
-  initGenerativeWord(dividedWord);
-  initGenerativeChar(dividedChar);
-  
-  drawCharByLine();
+    loadTextByWord(loadText(filepath));
+    loadTextByChar(loadText(filepath));
+    
+    initGenerativeString(dividedString);
+    initGenerativeWord(dividedWord);
+    initGenerativeChar(dividedChar);
+    
+    drawCharByLine(); //여기서 그려준다 
+    
+    if (savePDF) {
+    println(savePDF);
+    beginRecord(PDF, timestamp()+".pdf");
+     }
+     
+    if (savePDF) {
+    savePDF = false;
+    endRecord();
+    println("saving to pdf – done");
+     }
   }
-  
-  
-  
-  
-  //setStringBoundingBox(dividedString);
-  //drawString(i);
-  
-  //i++;
 }
 
 //하나의 전체 텍스트를 입력 받으면 그걸 한 문장 단위로 쪼개기 
@@ -107,6 +104,7 @@ char[] divide_to_char(String textOriginal)
 //단락별로 텍스트가 들어오면 처리하기 까다롭다
 //그냥 문단 구별 없이 하나의 텍스트를 입력받자
 //최종 하나의 텍스트는 finalContent라 하자 
+//-------------------------- load text --------------------------//
 String loadText(String filename)
 {
   String[] content = loadStrings(filename);
@@ -131,25 +129,19 @@ String loadText(String filename)
 //  return length;
 //}
 
-//로드한다는 것은 진짜 텍스트를 가져만 온다는 뜻
-//아직 클래스에 초기화를 한건 아니다 
+//---------------------------from file to variable load data------------------// 
 int loadTextByString(String content)
 {
   dividedString = split(content,'.');
   return 1;
 }
 
-
-//한 문장이 아니라 단어로 출력해주기 
 int loadTextByWord(String content)
 {
   dividedWord = split(content,' ');
   return 1;
 }
 
-
-//한 문자씩 출력하는 방법 
-//한 단락의 길이는 1이다 
 int loadTextByChar(String content)
 {
   int length = content.length();
@@ -161,6 +153,7 @@ int loadTextByChar(String content)
   return 1;
 }
 
+//-------------------- init text / word / char ------------------------//
 void initGenerativeString(String[] strings)
 {
   int length = strings.length;
@@ -191,6 +184,7 @@ void initGenerativeChar(char[] chars)
   }
 }
 
+//------------------setboundingbox for string and draw text-----------------//
 void setStringBoundingBox(String[] dividedString)
 {
   int num = dividedString.length;
@@ -209,6 +203,8 @@ void drawString(int i)
     textArray[i].drawString();
 }
 
+
+//---------------------set position for char and draw char by line-----------------//
 void setCharPos(int i)
 {
     int randomX = int(random(10,width));
@@ -219,7 +215,7 @@ void setCharPos(int i)
 void drawCharByLine()
 {
   int length = dividedChar.length;
-  int offsetY =20 + rectY + rectHeight;
+  int offsetY =20;
   float totalLength =0;
   for(int i=0; i<length; i++)
   {
@@ -288,10 +284,6 @@ void drawCharByLine()
 *
 */
 
-//void mousePressed()
-//{
-//  mouseStatus =1;
-//}
 //void drawStringWithinBox(String[] dividedString)
 //{
 //  int num = dividedString.length;
@@ -305,36 +297,22 @@ void drawCharByLine()
     
 //  }
 //}
-void mousePressed()
+
+
+// -------------------- key and mouse events ------------------------
+void keyPressed()
 {
-  if(rectStatus){
+  if(key=='f'||key=='F'){
     selectInput("Select a file to process:", "fileSelected");
   }
-  else {
-    //아니라면 아무것도 일어나지 않는다 
+  //save to pdf
+  if(key=='p'||key=='P'){
+    savePDF = true; 
   }
 }
 
-void update()
-{
-  if(clickRect(rectX,rectY,rectWidth,rectHeight)){
-    rectStatus = true;
-  }
-  else {
-    rectStatus = false;
-  }
-}
 
-boolean clickRect(int x, int y, int width, int height)
-{
-    if (mouseX >= x && mouseX <= x+width && 
-      mouseY >= y && mouseY <= y+height) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
+//----------------------file input-----------------------------------
 void fileSelected(File selection)
 {
   if(selection==null){
@@ -344,4 +322,8 @@ void fileSelected(File selection)
     println(selection.getAbsolutePath());
     filepath = selection.getAbsolutePath();
   }
+}
+
+String timestamp() {
+  return String.format("%1$ty%1$tm%1$td_%1$tH%1$tM%1$tS", Calendar.getInstance());
 }
