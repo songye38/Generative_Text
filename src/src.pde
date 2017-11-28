@@ -31,6 +31,11 @@ String filepath = "";
 //-------------------- text output ----------------------//
 boolean savePDF = false;
 
+//--------------------- value for gui return values----------------//
+int fontSize;
+int fontTypeIndex;
+String colorHexValue;
+
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -43,7 +48,6 @@ void setup()
 
 void draw()
 {
-  drawGUI();
   background(255);
   fill(0);
   if(filepath!="")
@@ -56,18 +60,14 @@ void draw()
     initGenerativeWord(dividedWord);
     initGenerativeChar(dividedChar);
     
-    drawCharByLine(); //여기서 그려준다 
-    
-    //if (savePDF) {
-    //println(savePDF);
-    //beginRecord(PDF, timestamp()+".pdf");
-    // }
+    if(colorHexValue!=null)
+    {
+      setFontTypeToChar(fontTypeIndex);
+     setFontColorToChar(colorHexValue);
+     setFontSizeToChar(fontSize);
      
-    //if (savePDF) {
-    //savePDF = false;
-    //endRecord();
-    //println("saving to pdf – done");
-    // }
+    drawCharByLine(); //여기서 그려준다 
+    }
   }
 }
 
@@ -156,6 +156,43 @@ void drawString(int i)
 }
 
 
+void setFontSizeToChar(int size)
+{
+  int num = charArray.length;
+  for(int i=0; i<num; i++)
+  {
+    charArray[i].setFontSize(size);
+  }
+}
+void setFontTypeToChar(int index)
+{
+  int num = charArray.length;
+  for(int i=0; i<num; i++)
+  {
+    charArray[i].setFont(index);
+  }
+}
+void setFontColorToChar(String hexValue)
+{
+  color rgb = hexToRgb(hexValue);
+  int num = charArray.length;
+  for(int i=0; i<num; i++)
+  {
+    charArray[i].setFontColor(rgb);
+  }
+}
+color hexToRgb(String hexValue)
+{
+  String subString = hexValue.substring(3,9);
+  println(subString);
+  color rgb = color(
+            Integer.valueOf( subString.substring( 0, 2 ),16),
+            Integer.valueOf( subString.substring( 2, 4 ),16),
+            Integer.valueOf( subString.substring( 4, 6 ),16) );
+  println(rgb);
+  return rgb;
+}
+
 //---------------------set position for char and draw char by line-----------------//
 void setCharPos(int i)
 {
@@ -181,75 +218,9 @@ void drawCharByLine()
       offsetY +=(charArray[i].getFontSize())*2;
       totalLength = 0;
       charArray[i].drawChar(totalLength,offsetY); 
-      //println(offsetY);
-      //if(offsetY>height-(charArray[i].getFontSize())*2)
-      // {
-      //  offsetY = 20;
-      //  charArray[i].setFontColor(100,20,100);
-      //  charArray[i].drawChar(totalLength,offsetY); 
-      //}
     }
   }
 }
-//int getTotalOffsetY()
-//{
-//  int length = dividedChar.length;
-//  int offsetY =20;
-//  float totalLength =0;
-//  int totalOffset =0;
-//  for(int i=0; i<length; i++)
-//  {
-//    totalLength += charArray[i].getCharWidth();
-    
-//    if(totalLength>width-20)
-//    {
-//      offsetY +=(charArray[i].getFontSize())*2;
-      
-//    }
-//  }
-//  return offsetY;
- 
- 
-//}
-//int getPageNum()
-//{
-//  int ypos = height-40;
-//  int xpos = width/2;
-//  int num = (getTotalOffsetY()/ypos);
-//  //println(getTotalOffsetY());
-//  //println(ypos);
-//  return num;
-  
-//  //총 몇페이지에 나눠서 텍스트 전체를 표시할 수 있는가?
-//  //height and offsetY 
-//}
-//void printPageNum()
-//{
-//  int content = getPageNum();
-//  String c = str(content);
-//  //char char_content = content.charAt(0);
-//  text(c, width/2, height-40);
-//}
-
-
-/* 2017.11.22 
-*
-*/
-
-//void drawStringWithinBox(String[] dividedString)
-//{
-//  int num = dividedString.length;
-//  for(int i=0; i<num; i++)
-//  {
-//    int widthOfString = textArray[i].getNumOfCharsInString();
-//    if(widthOfString>width)
-//    {
-//      textArray[i].
-//    }
-    
-//  }
-//}
-
 
 // -------------------- key and mouse events ------------------------
 void keyPressed()
