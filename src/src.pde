@@ -1,6 +1,9 @@
+
+
 // ---------------imports---------------------//
 import processing.pdf.*;
 import java.util.Calendar;
+
 
 
 /* exploring text
@@ -25,20 +28,23 @@ char[] dividedChar;
 String filepath = "";
 
 
-//------------ text output ----------------------
+//-------------------- text output ----------------------//
 boolean savePDF = false;
 
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
 {
-  size(600,400);
+  size(1200,600);  //minimum height is 600
   background(255,255,255);
-  frameRate(1);  
+  setupGUI();
+  ///frameRate(1);  
 }
 
 void draw()
 {
+  drawGUI();
+  background(255);
   fill(0);
   if(filepath!="")
   {
@@ -52,16 +58,16 @@ void draw()
     
     drawCharByLine(); //여기서 그려준다 
     
-    if (savePDF) {
-    println(savePDF);
-    beginRecord(PDF, timestamp()+".pdf");
-     }
+    //if (savePDF) {
+    //println(savePDF);
+    //beginRecord(PDF, timestamp()+".pdf");
+    // }
      
-    if (savePDF) {
-    savePDF = false;
-    endRecord();
-    println("saving to pdf – done");
-     }
+    //if (savePDF) {
+    //savePDF = false;
+    //endRecord();
+    //println("saving to pdf – done");
+    // }
   }
 }
 
