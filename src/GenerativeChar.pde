@@ -2,9 +2,7 @@
 class GenerativeChar
 {
   char mainChar =0;
-  int fontRedColor =0;
-  int fontGreenColor =0;
-  int fontBlueColor =0;
+  color fontColor;
   int fontTransparency =0;
   
   int posX =0;
@@ -20,7 +18,7 @@ class GenerativeChar
   GenerativeChar(char GenerativeChar)
   {
     mainChar = GenerativeChar;
-    font = createFont("Verdana",32);
+    font = createFont("NanumSquareOFTLight",32);
     textFont(font);
     textSize(20);
     setFontSize(20);
@@ -33,11 +31,9 @@ class GenerativeChar
     posY = y;
   }
    
-  void setFontColor(int red, int green, int blue)
+  void setFontColor(color value)
   {
-    fontRedColor = red;
-    fontGreenColor = green;
-    fontBlueColor = blue;
+    fontColor = value;
   }
   void setTransparency(int amount)
   {
@@ -78,15 +74,21 @@ class GenerativeChar
   
   //하나의 문자를 찍는 함수 특정 위치에 가장 기본적인 함수
   void drawChar()
-  {
+  {  
+      fill(fontColor);
+      textSize(fontSize);
       text(mainChar,posX,posY);    
   } 
   void drawChar(int x, int y)
   {
+     fill(fontColor);
+      textSize(fontSize);
     text(mainChar,x,y);
   }
    void drawChar(float x, int y)
   {
+     fill(fontColor);
+      textSize(fontSize);
     text(mainChar,x,y);
   }
 }
