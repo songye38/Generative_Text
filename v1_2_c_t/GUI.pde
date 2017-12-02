@@ -12,7 +12,7 @@ ListBox l;
 ColorWheel cw;
 Slider s;
 Button btn;
-Button merge;
+//Button merge;
 
 
 
@@ -105,11 +105,11 @@ void setupGUI() {
            .setSize(40,40)
            .moveTo(g4)
            ;
-  merge = cp5.addButton("merge")
-             .setPosition(60,10)
-             .setSize(40,40)
-             .moveTo(g4)
-             ;
+  //merge = cp5.addButton("merge")
+  //           .setPosition(60,10)
+  //           .setSize(40,40)
+  //           .moveTo(g4)
+  //           ;
 
 //---------------------create tab1's accordion------------------------//
   // create a new accordion
@@ -235,9 +235,9 @@ void controlEvent(ControlEvent theControlEvent) {
     mergeDoneStatus = true;
 
   }
-  if(theControlEvent.isFrom("merge")){
-    mergeDoneStatus = true;
-  }
+  //if(theControlEvent.isFrom("merge")){
+  //  mergeDoneStatus = true;
+  //}
 //------------------------- controller check for tab2----------------------------//
 }
 
