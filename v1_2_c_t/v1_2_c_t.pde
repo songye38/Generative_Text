@@ -87,12 +87,12 @@ void draw()
   {
     loadTextByChar(loadText(filepath));  //일단은 텍스트를 로드하기 
     
-    if(mergeDoneStatus==true)
-    { 
-      initSymbolsIndex();
-      initSymbolIndexArray();
-      mergeTextnSymbol();
-    }
+    //if(mergeDoneStatus==true)
+    //{ 
+    //  initSymbolsIndex();
+    //  initSymbolIndexArray();
+    //  mergeTextnSymbol();
+    //}
     
     initGenerativeChar(dividedChar);
     
@@ -106,7 +106,7 @@ void draw()
     }
   }
    btnStatus = false;
-   mergeDoneStatus = false;
+   //mergeDoneStatus = false;
 }
 
 
