@@ -50,18 +50,23 @@ char[] dividedChar;
 
 
 //------------------ initial parameters and declaration-----------------//
-String filepath = "";
+String result_filepath = "";
+String original_filepath = "";
+
 
 
 //-------------------- text output ----------------------//
 boolean savePDF = false;
 
-//--------------------- value for gui return values----------------//
+//--------------------- value for tab1 gui return values----------------//
 int fontSize;
 int fontTypeIndex;
 String colorHexValue;
 boolean btnStatus = false;
-boolean mergeDoneStatus = false;
+
+
+//--------------------- value for tab2 gui return values----------------//
+boolean tab2BtnStatus = false;
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -79,13 +84,15 @@ void draw()
   background(255);
   fill(0);
   
+  if(tab2BtnStatus) selectInput("Select a file to process:", "fileSelectedOriginal");
+  
   if(btnStatus==true)
   {
     selectInput("Select a file to process:", "fileSelected");
   }
-  if(filepath!="")
+  if(result_filepath!="")
   {
-    loadTextByChar(loadText(filepath));  //일단은 텍스트를 로드하기 
+    loadTextByChar(loadText(result_filepath));  //일단은 텍스트를 로드하기 
     
     //if(mergeDoneStatus==true)
     //{ 
@@ -106,6 +113,7 @@ void draw()
     }
   }
    btnStatus = false;
+   tab2BtnStatus = false;
    //mergeDoneStatus = false;
 }
 
@@ -320,14 +328,23 @@ void keyPressed()
 
 
 //----------------------file input-----------------------------------
-void fileSelected(File selection)
+void fileSelectedOriginal(File selection)
 {
   if(selection==null){
     println("window was closed or the user hit cancel");
   }
   else {
-    println(selection.getAbsolutePath());
-    filepath = selection.getAbsolutePath();
+    original_filepath = selection.getAbsolutePath();
+  }
+}
+
+void fileSelectedResult(File selection)
+{
+  if(selection==null){
+    println("window was closed or the user hit cancel");
+  }
+  else {
+    result_filepath = selection.getAbsolutePath();
   }
 }
 
