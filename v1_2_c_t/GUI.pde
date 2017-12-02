@@ -34,15 +34,16 @@ void setupGUI() {
  
 
 //------------------------add two tabs-----------------------------//
+
   t1 = cp5.getTab("result")
           .activateEvent(true)
           .setLabel("result text")
-          .setId(1)
+          .setId(0)
           ;
-   t2 = cp5.getTab("make")
+  t2 = cp5.getTab("make")
           .activateEvent(true)
           .setLabel("make text")
-          .setId(2)
+          .setId(1)
           ;
   
 //----------------------add group1 and add ListBox to g1---------------------//
@@ -105,11 +106,6 @@ void setupGUI() {
            .setSize(40,40)
            .moveTo(g4)
            ;
-  //merge = cp5.addButton("merge")
-  //           .setPosition(60,10)
-  //           .setSize(40,40)
-  //           .moveTo(g4)
-  //           ;
 
 //---------------------create tab1's accordion------------------------//
   // create a new accordion
@@ -139,7 +135,7 @@ void setupGUI() {
                 .setBackgroundHeight(150)
                 ;
   
-  tab2g2field = cp5.addTextfield("symbolValue")
+  tab2g2field = cp5.addTextfield("input")
                    .setPosition(10,20)
                    .setSize(150,40)
                    .setFont(font)
@@ -167,8 +163,8 @@ void setupGUI() {
                  .setSize(40,40)
                  .moveTo(tab2g3);
                  
-  tab2g3btn2 = cp5.addButton("send")
-                 .setPosition(10,10)
+  tab2g3btn2 = cp5.addButton("finish")
+                 .setPosition(60,10)
                  .setSize(40,40)
                  .moveTo(tab2g3);
                  
@@ -181,33 +177,13 @@ void setupGUI() {
                  .addItem(tab2g3)
                  .moveTo("make")
                  ;
-   
-//----------------------setup for tab1---------------------//        
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.open(0,1,2,3);}}, 'o');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.close(0,1,2,3);}}, 'c');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.setWidth(300);}}, '1');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.setPosition(0,0);accordion1.setItemHeight(190);}}, '2'); 
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.setCollapseMode(ControlP5.ALL);}}, '3');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.setCollapseMode(ControlP5.SINGLE);}}, '4');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {cp5.remove("myGroup1");}}, '0');
-  
+     
   accordion1.open(0,1,2,3);
   accordion1.setCollapseMode(Accordion.MULTI);
-  
-//----------------------setup for tab1---------------------//        
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion2.open(0,1,2);}}, 'o');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion2.close(0,1,2);}}, 'c');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion2.setWidth(300);}}, '1');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion2.setPosition(0,0);accordion2.setItemHeight(190);}}, '2'); 
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion2.setCollapseMode(ControlP5.ALL);}}, '3');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion2.setCollapseMode(ControlP5.SINGLE);}}, '4');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {cp5.remove("myGroup1");}}, '0');
   
   accordion2.open(0,1,2);
   accordion2.setCollapseMode(Accordion.MULTI);
 }
-
-
 
 void drawGUI() {
  
@@ -232,15 +208,25 @@ void controlEvent(ControlEvent theControlEvent) {
   }
   if(theControlEvent.isFrom("inputFile")){
     btnStatus = true;
-    mergeDoneStatus = true;
-
   }
-  //if(theControlEvent.isFrom("merge")){
-  //  mergeDoneStatus = true;
-  //}
 //------------------------- controller check for tab2----------------------------//
+  if(theControlEvent.isFrom("File")){
+    tab2BtnStatus = true;
+    //println(tab2BtnStatus);
+  }
+  if(theControlEvent.isFrom("finish")){
+    tab2FinishStatus = true;
+  }
+  if(theControlEvent.isFrom("export")){
+    tab2ExportStatus = true;
+    mergeStatus = true;
+  }
 }
 
 public void clear() {
   cp5.get(Textfield.class,"symbolValue").clear();
+}
+public void input(String theText) {
+  //println("a textfield event for controller 'input' : "+theText);
+  resultSymbolString += theText;
 }
