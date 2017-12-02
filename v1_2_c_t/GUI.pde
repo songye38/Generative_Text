@@ -183,15 +183,15 @@ void setupGUI() {
                  ;
    
 //----------------------setup for tab1---------------------//        
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.open(0,1,2);}}, 'o');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.close(0,1,2);}}, 'c');
+  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.open(0,1,2,3);}}, 'o');
+  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.close(0,1,2,3);}}, 'c');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.setWidth(300);}}, '1');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.setPosition(0,0);accordion1.setItemHeight(190);}}, '2'); 
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.setCollapseMode(ControlP5.ALL);}}, '3');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion1.setCollapseMode(ControlP5.SINGLE);}}, '4');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {cp5.remove("myGroup1");}}, '0');
   
-  accordion1.open(0,1,2);
+  accordion1.open(0,1,2,3);
   accordion1.setCollapseMode(Accordion.MULTI);
   
 //----------------------setup for tab1---------------------//        
