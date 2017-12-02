@@ -22,8 +22,6 @@ import java.util.Arrays;
 import processing.pdf.*;
 import java.util.Calendar;
 
-
-
 /* exploring text
 *  f                 :text file input
 *  p                 :save pdf
@@ -33,7 +31,7 @@ import java.util.Calendar;
 //글자와 단어 그리고 문장을 담을 배열들 
 GenerativeChar[] charArray;
 
-
+PrintWriter output;
 
 static final int offsetX = 200;  //GUI의 width; 
 
@@ -72,7 +70,8 @@ boolean btnStatus = false;
 boolean tab2BtnStatus = false;
 String resultSymbolString = "";
 boolean tab2FinishStatus = false;
-
+boolean tab2ExportStatus =false;
+boolean mergeStatus = false;
 
 
 
@@ -81,8 +80,7 @@ void setup()
 {
   size(1200,600);  //minimum height is 600
   background(255,255,255);
-  //symbolArray = new CharSymbol[symNum];  //문장기호는 총 19개가 있다 (이미 확정된 것)
-  symbolIndexArray = new int[100];  //일단 잠시동안만
+  output = createWriter("resultfile.txt");
   setupGUI();
 }
 
@@ -102,13 +100,16 @@ void draw()
     setupOriginalText(original_filepath);
     initSymbolClass();
     initSymbolIndex();
-    mergeSymbols();
+    if(tab2ExportStatus&&mergeStatus)
+    {
+      exportToTxt(mergeSymbols());
+    }
   }
   
   
   if(btnStatus==true)
   {
-    selectInput("Select a file to process:", "fileSelected");
+    selectInput("Select a file to process:", "fileSelectedResult");
   }
   if(result_filepath!="")
   {
@@ -127,16 +128,9 @@ void draw()
   }
    btnStatus = false;
    tab2BtnStatus = false;
+   mergeStatus = false;
    //mergeDoneStatus = false;
 }
-
-/*
-//------------------variable for character symbols-----------------------//
-CharSymbol[] symbolArray;
-static final int symNum = 19;
-int[] symbolIndexArray;
-char[] symbolChars;
-*/
 
 void setupOriginalText(String filename)
 {
@@ -161,12 +155,10 @@ void initSymbolIndex()
   {
     randomValue = (int)random(0,stringResult.length());
     symbolIndexArray[i] = randomValue;
-    //symbolArray[i].setIndex(randomValue);
   }
    Arrays.sort(symbolIndexArray);
-   printArray(symbolIndexArray);
 }
-void mergeSymbols()
+String mergeSymbols()
 {
   //println(stringResult);
   String finalString = "";
@@ -179,7 +171,15 @@ void mergeSymbols()
       finalString += stringResult.substring(startIndex,endIndex);
       finalString += symbolArray[j].getChar();
     }
-  println(finalString);
+  return finalString;
+}
+void exportToTxt(String str)
+{
+  print("str :");
+  println(str);
+  output.println(str);
+  output.flush();
+  output.close();
 }
 
 /*버튼을 눌러 텍스트를 담기 
@@ -198,9 +198,6 @@ void mergeSymbols()
 *
 *
 */
-
-//substring을 만든다음에 이 substring들을 하나의 string으로 합치고 다시 하나의 문자열로 쪼갤까?
-
 
 //-------------------- load text --------------------//
 String loadText(String filename)
