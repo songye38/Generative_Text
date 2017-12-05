@@ -1,6 +1,4 @@
-/* 파일을 인풋 받고 하는 과정을 좀 더 매끄럽게 만들어보기
-//아마 많은 boolean값들을 두고 이 값들이 true일때만 실행되도록 만들어야 될것 같다
-//controlp5를 통해서 파일을 입력받는것도 왠지 필요할것 같다
+/*
 * - 어디서 글을 가져올 것인가?
 * 1. choose text from file
 * 2. choose text from news
@@ -78,7 +76,7 @@ void draw()
     ta.setColor(color(getColorByHex(colorHexValue)));
     ta.setLineHeight(lineHeight);
     ta.scroll(map(mouseY,0,height,0,1));
-    println(map(mouseY,0,height,0,1));
+    //println(map(mouseY,0,height,0,1));
   }
    btnStatus = false;
 }
@@ -95,6 +93,7 @@ String loadText(String filename)
 int loadTextByWord(String content)
 {
   dividedWord = split(content,' ');
+  //공백을 기준으로 단어를 나눴는데 다시 합칠때는 공백을 넣어서 합쳐야 될 것 같다 
   return 1;
 }
 
@@ -104,7 +103,7 @@ void initGenerativeWord(String[] words)
   wordArray = new GenerativeWord[length];
   for(int i=0; i<length; i++)
   {
-    wordArray[i] = new GenerativeWord(words[i]);
+    wordArray[i] = new GenerativeWord(words[i]+" ");
   }
 }
 
@@ -142,6 +141,7 @@ void drawWordInArea()
     for_ta += wordArray[i].getWord();
   }
   ta.setText(for_ta);
+  //println(for_ta);
 }
 
 // -------------------- key and mouse events ------------------------
