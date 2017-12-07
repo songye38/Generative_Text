@@ -26,6 +26,10 @@ Button tab2g3btn1;
 Button tab2g3btn2;
 Accordion accordion2;
 
+//---------------------variable for textarea ----------------//
+Textarea ta;
+Slider lh;
+
 
 void setupGUI() {
   
@@ -97,6 +101,13 @@ void setupGUI() {
          .setRange(5,50)
          .setValue(20)
          .moveTo(g3);
+         
+  lh = cp5.addSlider("lineHeight")
+          .setPosition(15,30)
+          .setRange(20,100)
+          .setValue(20)
+          .moveTo(g3)
+          ;
 //----------------------add group4 and add two Buttons to g4---------------------//     
   Group g4 = cp5.addGroup("file")
                 .setBackgroundColor(color(0,64))
@@ -107,7 +118,7 @@ void setupGUI() {
            .setSize(40,40)
            .moveTo(g4)
            ;
-  pdfBtn = cp5.addButton("exportPdf")
+  pdfBtn = cp5.addButton("exportPng")
               .setPosition(60,10)
               .setSize(40,40)
               .moveTo(g4)
@@ -183,6 +194,20 @@ void setupGUI() {
                  .addItem(tab2g3)
                  .moveTo("make")
                  ;
+                
+                
+  //--------------add textarea --------------------//
+  ta = cp5.addTextarea("txt")
+          .setPosition(200,10)
+          .setSize(width-230,height-20)
+          .setLineHeight(20)
+          .setFont(createFont("arial",12))
+          .setColor(color(0))
+          .setColorBackground(color(255,100))
+          .setColorForeground(color(255,0,0))
+          .showScrollbar()
+          .moveTo(t1)
+          ;
      
   accordion1.open(0,1,2,3);
   accordion1.setCollapseMode(Accordion.MULTI);
@@ -202,6 +227,10 @@ void controlEvent(ControlEvent theControlEvent) {
     int a =(int)theControlEvent.getController().getValue();
     fontSize = a;
   }
+  if(theControlEvent.isFrom("lineHeight")){
+    int t =(int)theControlEvent.getController().getValue();
+    lineHeight = t;
+  }
   if(theControlEvent.isFrom("list")){
     int index =(int)theControlEvent.getController().getValue();
     fontTypeIndex = index;
@@ -214,9 +243,10 @@ void controlEvent(ControlEvent theControlEvent) {
   }
   if(theControlEvent.isFrom("inputFile")){
     btnStatus = true;
+    taStatus = true;
   }
-   if(theControlEvent.isFrom("exportPdf")){
-    savePDF = true;
+   if(theControlEvent.isFrom("exportPng")){
+    saveOneFrame = true;
   }
 //------------------------- controller check for tab2----------------------------//
   if(theControlEvent.isFrom("File")){

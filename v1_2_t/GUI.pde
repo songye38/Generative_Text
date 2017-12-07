@@ -12,8 +12,10 @@ ListBox l;
 ColorWheel cw;
 Slider s;
 Button btn;
-//Button merge;
 Button pdfBtn;
+//두개 추가된 것 
+Textarea ta;
+Slider lh;
 
 
 
@@ -97,6 +99,12 @@ void setupGUI() {
          .setRange(5,50)
          .setValue(20)
          .moveTo(g3);
+  lh = cp5.addSlider("lineHeight")
+          .setPosition(15,30)
+          .setRange(20,100)
+          .setValue(20)
+          .moveTo(g3)
+          ;
 //----------------------add group4 and add two Buttons to g4---------------------//     
   Group g4 = cp5.addGroup("file")
                 .setBackgroundColor(color(0,64))
@@ -125,6 +133,17 @@ void setupGUI() {
                  .addItem(g4)
                  .moveTo("result")
                  ;
+ ta = cp5.addTextarea("txt")
+          .setPosition(200,10)
+          .setSize(width-220,height-20)
+          .setLineHeight(20)
+          .setFont(createFont("arial",12))
+          .setColor(color(0))
+          .setColorBackground(color(255,100))
+          .setColorForeground(color(255,0,0))
+          .showScrollbar()
+          .moveTo("result")
+          ;
 //----------------------add tab2 group1 and add Button to g1---------------------// 
   Group tab2g1 = cp5.addGroup("filechoose")
                 .setBackgroundColor(color(0, 64))
@@ -215,7 +234,11 @@ void controlEvent(ControlEvent theControlEvent) {
   if(theControlEvent.isFrom("inputFile")){
     btnStatus = true;
   }
-   if(theControlEvent.isFrom("exportPdf")){
+  if(theControlEvent.isFrom("lineHeight")){
+    int t =(int)theControlEvent.getController().getValue();
+    lineHeight = t;
+  }
+  if(theControlEvent.isFrom("exportPdf")){
     savePDF = true;
   }
 //------------------------- controller check for tab2----------------------------//
