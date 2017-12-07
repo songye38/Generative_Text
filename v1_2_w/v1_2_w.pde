@@ -47,6 +47,7 @@ String colorHexValue;
 boolean btnStatus;
 boolean taStatus;
 int lineHeight; 
+boolean saveOneFrame = false;
 
 
 //--------------------- value for tab2 gui return values----------------//
@@ -68,6 +69,10 @@ void setup()
 
 void draw()
 {
+  if(saveOneFrame == true) {
+    saveFrame(timestamp()+".png");
+    saveOneFrame = false;
+  }
   background(255);
   if(tab2BtnStatus) selectInput("Select a file to process:", "fileSelectedOriginal");
   
