@@ -1,42 +1,40 @@
-/*
-* - 어디서 글을 가져올 것인가?
-* 1. choose text from file
-* 2. choose text from news
-* 3. choose text from evernote (java api 이용)
-* 4. choose text from trello
-* 5. choose text from wiki 
 
-* - 가져온 글을 어떻게 합칠 것인가 -> 어떻게 텍스트를 만들 것인가?
-* - 분야별로 합치기?
 
-* - 가져온 글에서 내가 좀 더 수정할 수 있는 방법들을 생각해보기 
+/* 가장 핵심적인 문제 
+* 우리는 이제 textarea를 통해서 그냥 전체 텍스트를 통으로 textarea로 넘길 것이다 -> 근데 굳이 generativeword로 나누어서 할 필요가 있나
+* 그러니까 make text tab에서 파일을 가져올 때 이 파일 마저도 굳이 클래스에 담을 필요는 없을 것 같다 
+* 필요한 건 처음 add symbol탭에서 파일을 export하고 그걸 읽어들일 때 이때 이 단어들을 generative word 객체로 만드는 게 필요할 것 같다 
 */
+
+
 // ---------------imports---------------------//
 import controlP5.*;
 import processing.pdf.*;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.Arrays;
 
-/* exploring text
-*  f                 :text file input
-*  p                 :save pdf
-*  s                 :save png
-*/
 
 //글자와 단어 그리고 문장을 담을 배열들 
-//GenerativeChar[] charArray;
-GenerativeWord[] wordArray;
-//GenerativeString[] textArray;
+GenerativeWord[] wordSymbolArray;
+
+//------------------variable for character symbols-----------------------//
+CharSymbol[] symbolArray;
+int[] symbolIndexArray;
+char[] symbolChars;
+int numOfSym = 0;
+String stringResult;
+
 
 
 //-------------------- variable array to save loaded data----------------// 
-//String[] dividedString;
-String[] dividedWord;
-//char[] dividedChar;
+
+String[] dividedOriginalWord;  //내가 export를 해서 만들어진 파일 
 
 
 //------------------ initial parameters and declaration-----------------//
-String filepath = "";
+String result_filepath = "";
+String original_filepath = "";
 
 
 //-------------------- text output ----------------------//
@@ -58,6 +56,8 @@ boolean tab2FinishStatus = false;
 boolean tab2ExportStatus =false;
 boolean mergeStatus = false;
 
+PrintWriter output;
+
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -69,25 +69,40 @@ void setup()
 void draw()
 {
   background(255);
-  fill(0);
+  if(tab2BtnStatus) selectInput("Select a file to process:", "fileSelectedOriginal");
+  
+  if(tab2FinishStatus)
+  {
+    numOfSym = resultSymbolString.length();
+  }
+  
+  if(original_filepath!="")
+  {
+    setupOriginalText(original_filepath);
+    initSymbolClass();
+    initSymbolIndex();
+    if(tab2ExportStatus&&mergeStatus)
+    {
+      exportToTxt(mergeSymbol_t());
+    }
+  }
   if(btnStatus==true) //input 버튼을 눌렀을 때 파일 선택창을 열기
   {
-    selectInput("Select a file to process:", "fileSelected");
+    selectInput("Select a file to process:", "fileSelectedResult");
   }
   //내가 파일을 선택해서 filepath가 채워지면 그때 이 path를 바탕으로 텍스트를 로드하기 
-  if(filepath!="")
+  if(result_filepath!="")
   {
-    loadTextByWord(loadText(filepath));
-    initGenerativeWord(dividedWord);
-
-    drawWordInArea();
+   
+    drawWordInArea(loadText(result_filepath));
     ta.setFont(createFont(getFontNameByIndex(fontTypeIndex),fontSize));
     ta.setColor(color(getColorByHex(colorHexValue)));
     ta.setLineHeight(lineHeight);
     ta.scroll(map(mouseY,0,height,0,1));
-    //println(map(mouseY,0,height,0,1));
   }
    btnStatus = false;
+   tab2BtnStatus = false;
+   mergeStatus = false;
 }
 
 
@@ -99,20 +114,16 @@ String loadText(String filename)
   return finalContent;
 }
 
-int loadTextByWord(String content)
+void setupOriginalText(String filename)
 {
-  dividedWord = split(content,' ');
-  //공백을 기준으로 단어를 나눴는데 다시 합칠때는 공백을 넣어서 합쳐야 될 것 같다 
-  return 1;
-}
-
-void initGenerativeWord(String[] words)
-{
-  int length = words.length;
-  wordArray = new GenerativeWord[length];
+  String[] a = loadStrings(filename);
+  stringResult = a[0];
+  dividedOriginalWord = split(stringResult,' ');
+  int length = dividedOriginalWord.length;
+  wordSymbolArray = new GenerativeWord[length];
   for(int i=0; i<length; i++)
   {
-    wordArray[i] = new GenerativeWord(words[i]+" ");
+    wordSymbolArray[i] = new GenerativeWord(dividedOriginalWord[i]+" ");
   }
 }
 
@@ -138,29 +149,86 @@ color hexToRgb(String hexValue)
   return rgb;
 }
 
-
-void drawWordInArea()
+void exportToTxt(String str)
 {
-  int length = dividedWord.length;
+  output = createWriter(timestamp()+".txt");
+  output.println(str);
+  output.flush();
+  output.close();
+}
+
+//가져온 텍스트 파일을 굳이 generativeWord클래스에 담아서 출력할 필요가 있을까?
+void drawWordInArea(String content)
+{
+  //int length = dividedWord.length;
   String for_ta = "";
-  for(int i=0; i<length; i++)
-  {
-    for_ta += wordArray[i].getWord();
-  }
+  for_ta += content;
+  //for(int i=0; i<length; i++)
+  //{
+  //  for_ta += wordArray[i].getWord();
+  //}
   ta.setText(for_ta);
 }
 
+void initSymbolClass()
+{
+  symbolArray = new CharSymbol[numOfSym];
+  for(int i=0; i<numOfSym; i++)
+  {
+    symbolArray[i] = new CharSymbol(resultSymbolString.charAt(i));
+  }
+}
 
+void initSymbolIndex()
+{
+  symbolIndexArray = new int[numOfSym];
+  int randomValue = 0;
+  for(int i=0; i<numOfSym; i++)
+  {
+    randomValue = (int)random(0,dividedOriginalWord.length);
+    symbolIndexArray[i] = randomValue;
+  }
+   Arrays.sort(symbolIndexArray);
+}
+
+
+String mergeSymbol_t()
+{
+  String finalString = "";
+  int length = dividedOriginalWord.length;  
+  
+  for(int i=0; i<length; i++)
+  {
+    finalString += wordSymbolArray[i].getWord();
+    for(int j=0; j<numOfSym; j++)
+    {
+      if(i==symbolIndexArray[j])
+      {
+        finalString += symbolArray[j].getChar();
+      }
+    }
+  }
+  return finalString;
+}
 
 //----------------------file input-----------------------------------
-void fileSelected(File selection)
+void fileSelectedOriginal(File selection)
 {
   if(selection==null){
     println("window was closed or the user hit cancel");
   }
   else {
-    println(selection.getAbsolutePath());
-    filepath = selection.getAbsolutePath();
+    original_filepath = selection.getAbsolutePath();
+  }
+}
+
+void fileSelectedResult(File selection)
+{
+  if(selection==null){
+    println("window was closed or the user hit cancel");
+  }
+  else {
+    result_filepath = selection.getAbsolutePath();
   }
 }
 
