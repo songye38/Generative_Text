@@ -130,10 +130,11 @@ font = createFont("arial",20);
           .setSize(width-220,height-20)
           .setLineHeight(20)
           .setFont(createFont("arial",12))
-          .setColor(color(128))
+          .setColor(color(0))
           .setColorBackground(color(255,100))
           .setColorForeground(color(255,0,0))
           .showScrollbar()
+          .moveTo("result")
           ;
   accordion1.open(0,1,2,3);
 
