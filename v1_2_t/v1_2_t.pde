@@ -66,7 +66,7 @@ int fontSize;
 int fontTypeIndex;
 String colorHexValue;
 boolean btnStatus = false;
-boolean savePDF = false;
+boolean saveOneFrame = false;
 int lineHeight;
 
 
@@ -89,9 +89,9 @@ void setup()
 
 void draw()
 {
-  if(savePDF)
-  {
-    exportToPdf();
+  if(saveOneFrame == true) {
+    saveFrame(timestamp()+".png");
+    saveOneFrame = false;
   }
   background(255);
   fill(0);
@@ -126,12 +126,7 @@ void draw()
     ta.setLineHeight(lineHeight);
     ta.scroll(map(mouseY,0,height,0,1));
   }
-  if(savePDF)
-  {
-    savePDF = false;
-    println("end of make pdf file");
-    endRecord();
-  }
+
    btnStatus = false;
    tab2BtnStatus = false;
    mergeStatus = false;

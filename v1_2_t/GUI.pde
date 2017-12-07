@@ -115,7 +115,7 @@ void setupGUI() {
            .setSize(40,40)
            .moveTo(g4)
            ;
-  pdfBtn = cp5.addButton("exportPdf")
+  pdfBtn = cp5.addButton("exportPng")
               .setPosition(60,10)
               .setSize(40,40)
               .moveTo(g4)
@@ -238,8 +238,8 @@ void controlEvent(ControlEvent theControlEvent) {
     int t =(int)theControlEvent.getController().getValue();
     lineHeight = t;
   }
-  if(theControlEvent.isFrom("exportPdf")){
-    savePDF = true;
+  if(theControlEvent.isFrom("exportPng")){
+    saveOneFrame = true;
   }
 //------------------------- controller check for tab2----------------------------//
   if(theControlEvent.isFrom("File")){
