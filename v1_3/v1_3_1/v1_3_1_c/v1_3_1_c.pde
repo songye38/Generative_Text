@@ -90,11 +90,11 @@ void setup()
 
 void draw()
 {
+   background(255);
   if(saveOneFrame == true) {
     saveFrame(timestamp()+".png");
     saveOneFrame = false;
   }
-  background(255);
   
   //파일 선택 버튼이 눌렸다면!!!!
   if(tab2BtnStatus) selectInput("Select a file to process:", "fileSelectedOriginal");
@@ -108,6 +108,7 @@ void draw()
       numOfSentence[i][0] = getNumOfSentence(loadedSelectedFiles[i][0]);
       println(numOfSentence[i][0]);
     }
+    drawGUI();
   }
   
   if(tab2FinishStatus)

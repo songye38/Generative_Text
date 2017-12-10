@@ -14,6 +14,7 @@ Slider s;
 Button btn;
 //Button merge;
 Button pdfBtn;
+Button[] fileBtn;
 
 
 
@@ -35,6 +36,7 @@ void setupGUI() {
 //----------------------------basic setup----------------------------//
  cp5 = new ControlP5(this);
  font = createFont("arial",20);
+ fileBtn = new Button[NUM_OF_FILES];
  
 
 //------------------------add two tabs-----------------------------//
@@ -208,10 +210,26 @@ void setupGUI() {
   
   accordion2.open(0,1,2);
   accordion2.setCollapseMode(Accordion.MULTI);
+  
 }
 
 void drawGUI() {
- 
+  if(isfileSelectDone)
+  {
+      fill(0);
+      noStroke();
+    for(int i=0; i<numOfSelectedFiles; i++)
+    {
+      rect(220+(i*80),200,40,numOfSentence[i][0]*3); 
+      textFont(font);
+      textSize(20);
+      text(selectedFileNames[i][1],220+(i*80),180);
+      fileBtn[i] = cp5.addButton(selectedFileNames[i][1])
+         .setPosition(220+(i*80),100)
+         .setSize(40,40)
+         .moveTo("make");
+    }
+  }
 }
 
 void controlEvent(ControlEvent theControlEvent) {
