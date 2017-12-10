@@ -242,6 +242,9 @@ void controlEvent(ControlEvent theControlEvent) {
    if(theControlEvent.isFrom("exportPng")){
     saveOneFrame = true;
   }
+  if(theControlEvent.isFrom("done")){
+    isfileSelectDone = true;
+  }
 //------------------------- controller check for tab2----------------------------//
   if(theControlEvent.isFrom("File")){
     tab2BtnStatus = true;

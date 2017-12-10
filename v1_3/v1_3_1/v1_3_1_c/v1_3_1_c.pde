@@ -2,12 +2,8 @@
 * 그래프의 각 바의 높이는 각 파일에 있는 문장의 개수로 해주기 
 * 그러면 내가 일단 done이라는 버튼을 누르면 각 파일들에 있는 문장들을 각각 문장 단위로 쪼개야 한다 
 * 내가 export를 눌러 내가 새롭게 만든 텍스트를 생성했을 때 내가 전에 그린 그래프들을 지워주기 
-*
-*
-*
-*
-*
-*
+* 해당 파일명에 해당하는 파일들을 로드하기 
+* 이때 여러문단들을 하나로 합쳐주기 
 */
 
 // ---------------imports---------------------//
@@ -50,10 +46,6 @@ String result_filepath = "";
 String original_filepath = "";
 
 
-
-//-------------------- text output ----------------------//
-
-
 //--------------------- value for tab1 gui return values----------------//
 int fontSize;
 int fontTypeIndex;
@@ -70,10 +62,18 @@ boolean mergeStatus = false;
 boolean taStatus;
 int lineHeight; 
 boolean saveOneFrame = false;
+
+//----------------------------이번 버전에서 새롭게 추가된 변수들------------------------//
 int numOfSelectedFiles = 0;
-String[] selectedFileNames;
-//최대 선택할 수 있는 파일의 개수
-final int NUM_OF_FILES = 100;
+//0번 인덱스에에는 전체 파일 경로
+//1번 인덱스에는 파일의 이름을 저장
+String[][] selectedFileNames;
+final int NUM_OF_FILES = 100;  //최대 선택할 수 있는 파일의 개수//최대 선택할 수 있는 파일의 개수
+boolean isfileSelectDone = false;
+String[][] loadedSelectedFiles;
+//각각에 파일에 담겨 있는 문장들의 개수를 담는 변수 
+int numOfSentence[][];
+
 
 
 
@@ -82,7 +82,9 @@ void setup()
 {
   size(1200,600);  //minimum height is 600
   background(255,255,255);
-  selectedFileNames = new String[NUM_OF_FILES];
+  selectedFileNames = new String[NUM_OF_FILES][2];
+  loadedSelectedFiles = new String[NUM_OF_FILES][1];
+  numOfSentence = new int[NUM_OF_FILES][1];
   setupGUI();
 }
 
@@ -93,9 +95,20 @@ void draw()
     saveOneFrame = false;
   }
   background(255);
-  //fill(0);
   
+  //파일 선택 버튼이 눌렸다면!!!!
   if(tab2BtnStatus) selectInput("Select a file to process:", "fileSelectedOriginal");
+  
+  //파일 선택하기 종료 버튼이 눌렸다면!!!!
+  if(isfileSelectDone)
+  {
+    for(int i=0; i<numOfSelectedFiles; i++)
+    {
+      loadedSelectedFiles[i][0] = setupSelectedFiles(selectedFileNames[i][0]);
+      numOfSentence[i][0] = getNumOfSentence(loadedSelectedFiles[i][0]);
+      println(numOfSentence[i][0]);
+    }
+  }
   
   if(tab2FinishStatus)
   {
@@ -135,7 +148,29 @@ void draw()
 void setupOriginalText(String filename)
 {
   String[] a = loadStrings(filename);
-  stringResult = a[0];
+  int length = a.length;
+  for(int i=0; i<length; i++)
+  {
+    stringResult += a[i];
+  }
+}
+//filename으로 가져와서 그냥 하나의 문단으로 만들기 
+String setupSelectedFiles(String filename)
+{
+  String[] a = loadStrings(filename);
+  String tempString = "";
+  int length = a.length;
+  for(int i=0; i<length; i++)
+  {
+    tempString += a[i];
+  }
+  return tempString;
+}
+
+int getNumOfSentence(String str)
+{
+  String[] tempString = split(str,'.');
+  return tempString.length;
 }
 
 void initSymbolClass()
@@ -160,7 +195,6 @@ void initSymbolIndex()
 }
 String mergeSymbols()
 {
-  //println(stringResult);
   String finalString = "";
   int startIndex =0;
   int endIndex = 0;
@@ -190,23 +224,6 @@ void exportToPdf()
 {
   beginRecord(PDF,timestamp()+".pdf");
 }
-
-/*버튼을 눌러 텍스트를 담기 
-* 어차피 substring으로 텍스트를 나눌 거니까 굳이 전체 string을 char로 나눌 필요는 없을 것 같다 
-* 내가 make tab에서 입력한 문자기호들을 symbolArray에 담기 
-* 이걸 많이 쓰니까 아예 내가 입력한 문자들의 개수를 변수에 담아두는 게 필요할 것 같다 numofSym;
-* numofSym;만큼 symbolArray를 생성하기 
-* symbolArray에 내가 tab2에서 입력한 문자 기호들을 하나씩 담기 //
-* numofSym만큼 symbolIndexArray도 int배열을 생성해주기  //
-* 위에서 받은 전체 문자열의 길이를 기준으로 random 값들을 생성하기
-* symbolArray에 .setindex 함수를 이용해서 랜덤 인덱스 값들을 정해주기 
-* arrays.sort를 통해서 오름차순으로 정렬하기  symbolIndexArray 이 배열 자체를 //
-* substring을 통해 해당 인덱스까지의 문자열을 추출해서 전체 문자열에 붙여주기 
-* 내가 아까 입력한 그 문자기호들을 하나씩 전체 문자열에 붙여주기 
-*
-*
-*
-*/
 
 //-------------------- load text --------------------//
 String loadText(String filename)
@@ -344,9 +361,10 @@ void fileSelectedOriginal(File selection)
   }
   else {
     original_filepath = selection.getAbsolutePath();
-    selectedFileNames[numOfSelectedFiles] = selection.getName();
-    tab2g1list.addItem(selectedFileNames[numOfSelectedFiles],selectedFileNames[numOfSelectedFiles]);
-    tab2g1list.getItem(selectedFileNames[numOfSelectedFiles]).put("color", new CColor().setBackground(0xffff0000).setBackground(0xffff8800));
+    selectedFileNames[numOfSelectedFiles][0] = original_filepath;
+    selectedFileNames[numOfSelectedFiles][1] = selection.getName();
+    tab2g1list.addItem(selectedFileNames[numOfSelectedFiles][1],selectedFileNames[numOfSelectedFiles]);
+    tab2g1list.getItem(selectedFileNames[numOfSelectedFiles][1]).put("color", new CColor().setBackground(0xffff0000).setBackground(0xffff8800));
     numOfSelectedFiles++;  
   }
 }
