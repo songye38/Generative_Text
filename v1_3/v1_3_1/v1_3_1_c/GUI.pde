@@ -152,7 +152,7 @@ void setupGUI() {
                   ;
    tab2g1list = cp5.addListBox("fileList")
         .setPosition(10,60)
-        .setSize(130,130)
+        .setSize(130,100)
         .setItemHeight(20)
         .setBarHeight(10)
         .setColorBackground(color(255,255))
@@ -160,9 +160,9 @@ void setupGUI() {
         .setColorForeground(color(255,100,0))
         .moveTo(tab2g1);
         ;
-   l.getCaptionLabel().toUpperCase(true);
-   l.getCaptionLabel().set("Font List");
-   l.getCaptionLabel().setColor(0);
+   tab2g1list.getCaptionLabel().toUpperCase(true);
+   tab2g1list.getCaptionLabel().set("Font List");
+   tab2g1list.getCaptionLabel().setColor(0);
 
 //----------------------add group3 and add two Buttons to g1---------------------//              
   Group tab2g3 = cp5.addGroup("textexport")

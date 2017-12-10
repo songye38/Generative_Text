@@ -1,3 +1,14 @@
+/* done을 눌렀을 때 그래프가 그려지도록 해주기 
+* 그래프의 각 바의 높이는 각 파일에 있는 문장의 개수로 해주기 
+* 그러면 내가 일단 done이라는 버튼을 누르면 각 파일들에 있는 문장들을 각각 문장 단위로 쪼개야 한다 
+* 내가 export를 눌러 내가 새롭게 만든 텍스트를 생성했을 때 내가 전에 그린 그래프들을 지워주기 
+*
+*
+*
+*
+*
+*
+*/
 
 // ---------------imports---------------------//
 import controlP5.*;
@@ -59,6 +70,10 @@ boolean mergeStatus = false;
 boolean taStatus;
 int lineHeight; 
 boolean saveOneFrame = false;
+int numOfSelectedFiles = 0;
+String[] selectedFileNames;
+//최대 선택할 수 있는 파일의 개수
+final int NUM_OF_FILES = 100;
 
 
 
@@ -67,6 +82,7 @@ void setup()
 {
   size(1200,600);  //minimum height is 600
   background(255,255,255);
+  selectedFileNames = new String[NUM_OF_FILES];
   setupGUI();
 }
 
@@ -128,7 +144,6 @@ void initSymbolClass()
   for(int i=0; i<numOfSym; i++)
   {
     symbolArray[i] = new CharSymbol(resultSymbolString.charAt(i));
-   // println(symbolArray[i].getChar());
   }
 }
 
@@ -281,23 +296,12 @@ color getColorByHex(String hexValue)
 color hexToRgb(String hexValue)
 {
   String subString = hexValue.substring(3,9);
-  //println(subString);
   color rgb = color(
             Integer.valueOf( subString.substring( 0, 2 ),16),
             Integer.valueOf( subString.substring( 2, 4 ),16),
             Integer.valueOf( subString.substring( 4, 6 ),16) );
-  //println(rgb);
   return rgb;
 }
-
-//---------------------set position for char and draw char by line-----------------//
-//void setCharPos(int i)
-//{
-//    int randomX = int(random(10,width));
-//    int randomY = int(random(10,height));
-//    charArray[i].setPosX(randomX);
-//    charArray[i].setPosY(randomY);
-//}
 
 void drawCharByLine()
 {
@@ -340,6 +344,10 @@ void fileSelectedOriginal(File selection)
   }
   else {
     original_filepath = selection.getAbsolutePath();
+    selectedFileNames[numOfSelectedFiles] = selection.getName();
+    tab2g1list.addItem(selectedFileNames[numOfSelectedFiles],selectedFileNames[numOfSelectedFiles]);
+    tab2g1list.getItem(selectedFileNames[numOfSelectedFiles]).put("color", new CColor().setBackground(0xffff0000).setBackground(0xffff8800));
+    numOfSelectedFiles++;  
   }
 }
 
