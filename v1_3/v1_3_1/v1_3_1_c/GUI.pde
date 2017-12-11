@@ -216,6 +216,10 @@ void drawGUI() {
       fill(0);
       noStroke();
       rect(220+(i*80),110,40,(numOfSentence[i][0]-readFileIndex[i][0])*3); 
+      if(numOfSentence[i][0]-readFileIndex[i][0]==0)
+      {
+        fileBtn[i].hide();
+      }
       textFont(font);
       textSize(20);
       text(selectedFileNames[i][1],220+(i*80),90);
@@ -227,7 +231,6 @@ void drawGUI() {
 }
 void makeButtons(int length)
 {
-  println("make"+length+"buttons");
   for(int i=0; i<length; i++)
   {
     fileBtn[i] = cp5.addButton(selectedFileNames[i][1])
