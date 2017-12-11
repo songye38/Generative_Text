@@ -77,6 +77,8 @@ String[][] splittedFiles;
 boolean isMakeButton = false;
 String btnClickedFileName = "";
 String chosenString = "";
+int[][] readFileIndex;
+boolean isBtnSelected = false;
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -88,9 +90,11 @@ void setup()
   numOfSentence = new int[NUM_OF_FILES][1];
   splittedFiles = new String[NUM_OF_FILES][1000];
   buttonStatusArray = new boolean[NUM_OF_FILES][1];
+  readFileIndex = new int[NUM_OF_FILES][1];
   for(int i=0; i<NUM_OF_FILES; i++)
   {
     buttonStatusArray[i][0] = false;
+    readFileIndex[i][0] = 0;
   }
   setupGUI();
 }
@@ -118,9 +122,23 @@ void draw()
     }
   }
   if(isMakeButton) makeButtons(numOfSelectedFiles);
-  
-  int index = processClickedFileName();
-  chosenString = splittedFiles[index][0];
+  for(int i=0; i<numOfSelectedFiles; i++)
+  {
+    if(btnClickedFileName==selectedFileNames[i][1])
+    {
+      isBtnSelected = true;
+    }
+  }
+  if(isBtnSelected)
+  {
+      int index = processClickedFileName();
+      int i = readFileIndex[index][0];
+      chosenString = splittedFiles[index][i];
+      readFileIndex[index][0]++;
+      isBtnSelected  = false;
+      print("i...................");
+      println(i);
+  }
   
   drawGUI();
   
@@ -158,6 +176,8 @@ void draw()
    tab2BtnStatus = false;
    mergeStatus = false;
    isMakeButton = false;
+   btnClickedFileName = "";
+ 
 }
 
 void setupOriginalText(String filename)
