@@ -187,8 +187,7 @@ void setupGUI() {
                  .addItem(tab2g3)
                  .moveTo("make")
                  ;
-                
-                
+                              
   //--------------add textarea --------------------//
   ta = cp5.addTextarea("txt")
           .setPosition(200,10)
@@ -217,12 +216,12 @@ void drawGUI() {
     {
       fill(0);
       noStroke();
-      rect(220+(i*80),110,40,numOfSentence[i][0]*3); 
+      rect(220+(i*80),110,40,(numOfSentence[i][0]-readFileIndex[i][0])*3); 
       textFont(font);
       textSize(20);
       text(selectedFileNames[i][1],220+(i*80),90);
     }
-    textSize(10);
+    textSize(15);
     text(chosenString,200,300);
   }
 

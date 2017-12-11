@@ -1,10 +1,3 @@
-/* done을 눌렀을 때 그래프가 그려지도록 해주기 
-* 그래프의 각 바의 높이는 각 파일에 있는 문장의 개수로 해주기 
-* 그러면 내가 일단 done이라는 버튼을 누르면 각 파일들에 있는 문장들을 각각 문장 단위로 쪼개야 한다 
-* 내가 export를 눌러 내가 새롭게 만든 텍스트를 생성했을 때 내가 전에 그린 그래프들을 지워주기 
-* 해당 파일명에 해당하는 파일들을 로드하기 
-* 이때 여러문단들을 하나로 합쳐주기 
-*/
 
 // ---------------imports---------------------//
 import controlP5.*;
@@ -13,11 +6,6 @@ import java.util.Arrays;
 import processing.pdf.*;
 import java.util.Calendar;
 
-/* exploring text
-*  f                 :text file input
-*  p                 :save pdf
-*  s                 :save png
-*/
 
 //글자와 단어 그리고 문장을 담을 배열들 
 GenerativeChar[] charArray;
@@ -136,8 +124,6 @@ void draw()
       chosenString = splittedFiles[index][i];
       readFileIndex[index][0]++;
       isBtnSelected  = false;
-      print("i...................");
-      println(i);
   }
   
   drawGUI();
