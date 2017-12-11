@@ -67,15 +67,16 @@ boolean saveOneFrame = false;
 int numOfSelectedFiles = 0;
 //0번 인덱스에에는 전체 파일 경로
 //1번 인덱스에는 파일의 이름을 저장
-String[][] selectedFileNames;
-final int NUM_OF_FILES = 100;  //최대 선택할 수 있는 파일의 개수//최대 선택할 수 있는 파일의 개수
+String[][] selectedFileNames;        //선택된 파일들의 경로를 담는 배열 
+final int NUM_OF_FILES = 100;        //최대 선택할 수 있는 파일의 개수//최대 선택할 수 있는 파일의 개수
 boolean isfileSelectDone = false;
-String[][] loadedSelectedFiles;
-//각각에 파일에 담겨 있는 문장들의 개수를 담는 변수 
-int numOfSentence[][];
-
-
-
+String[][] loadedSelectedFiles;      //선택된 파일들에 담겨져 있는 내용들을 담는 변수 
+int numOfSentence[][];   //각각에 파일에 담겨 있는 문장들의 개수를 담는 변수 
+boolean[][] buttonStatusArray;
+String[][] splittedFiles;
+boolean isMakeButton = false;
+String btnClickedFileName = "";
+String chosenString = "";
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -85,6 +86,12 @@ void setup()
   selectedFileNames = new String[NUM_OF_FILES][2];
   loadedSelectedFiles = new String[NUM_OF_FILES][1];
   numOfSentence = new int[NUM_OF_FILES][1];
+  splittedFiles = new String[NUM_OF_FILES][1000];
+  buttonStatusArray = new boolean[NUM_OF_FILES][1];
+  for(int i=0; i<NUM_OF_FILES; i++)
+  {
+    buttonStatusArray[i][0] = false;
+  }
   setupGUI();
 }
 
@@ -100,16 +107,22 @@ void draw()
   if(tab2BtnStatus) selectInput("Select a file to process:", "fileSelectedOriginal");
   
   //파일 선택하기 종료 버튼이 눌렸다면!!!!
+  //하나하나의 파일 별로 배열을 만들어주기 -> 이 배열에 
   if(isfileSelectDone)
   {
     for(int i=0; i<numOfSelectedFiles; i++)
     {
       loadedSelectedFiles[i][0] = setupSelectedFiles(selectedFileNames[i][0]);
       numOfSentence[i][0] = getNumOfSentence(loadedSelectedFiles[i][0]);
-      println(numOfSentence[i][0]);
+      loadFilesIntoArray(loadedSelectedFiles[i][0],i);
     }
-    drawGUI();
   }
+  if(isMakeButton) makeButtons(numOfSelectedFiles);
+  
+  int index = processClickedFileName();
+  chosenString = splittedFiles[index][0];
+  
+  drawGUI();
   
   if(tab2FinishStatus)
   {
@@ -144,6 +157,7 @@ void draw()
    btnStatus = false;
    tab2BtnStatus = false;
    mergeStatus = false;
+   isMakeButton = false;
 }
 
 void setupOriginalText(String filename)
@@ -166,6 +180,27 @@ String setupSelectedFiles(String filename)
     tempString += a[i];
   }
   return tempString;
+}
+void loadFilesIntoArray(String str, int index)
+{
+  String[] tempstr = split(str,'.');
+  int len = tempstr.length;
+  for(int i=0; i<len; i++)
+  {
+    splittedFiles[index][i] = tempstr[i];
+  }
+}
+int processClickedFileName()
+{
+  int index =0;
+  for(int i=0; i<numOfSelectedFiles; i++)
+  {
+    if(selectedFileNames[i][1].equals(btnClickedFileName))
+    {
+      index =i;
+    }
+  }
+  return index;
 }
 
 int getNumOfSentence(String str)

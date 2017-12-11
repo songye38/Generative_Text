@@ -16,8 +16,6 @@ Button btn;
 Button pdfBtn;
 Button[] fileBtn;
 
-
-
 //---------------------------------variable for tab2----------------------------------//
 Button tab2g1btn;    //file input button
 ListBox tab2g1list;
@@ -186,7 +184,6 @@ void setupGUI() {
                  .setPosition(5,20)
                  .setWidth(180)
                  .addItem(tab2g1)
-                 //.addItem(tab2g2)
                  .addItem(tab2g3)
                  .moveTo("make")
                  ;
@@ -216,19 +213,29 @@ void setupGUI() {
 void drawGUI() {
   if(isfileSelectDone)
   {
-      fill(0);
-      noStroke();
     for(int i=0; i<numOfSelectedFiles; i++)
     {
-      rect(220+(i*80),200,40,numOfSentence[i][0]*3); 
+      fill(0);
+      noStroke();
+      rect(220+(i*80),110,40,numOfSentence[i][0]*3); 
       textFont(font);
       textSize(20);
-      text(selectedFileNames[i][1],220+(i*80),180);
-      fileBtn[i] = cp5.addButton(selectedFileNames[i][1])
-         .setPosition(220+(i*80),100)
+      text(selectedFileNames[i][1],220+(i*80),90);
+    }
+    textSize(10);
+    text(chosenString,200,300);
+  }
+
+}
+void makeButtons(int length)
+{
+  println("make"+length+"buttons");
+  for(int i=0; i<length; i++)
+  {
+    fileBtn[i] = cp5.addButton(selectedFileNames[i][1])
+         .setPosition(220+(i*80),10)
          .setSize(40,40)
          .moveTo("make");
-    }
   }
 }
 
@@ -262,6 +269,7 @@ void controlEvent(ControlEvent theControlEvent) {
   }
   if(theControlEvent.isFrom("done")){
     isfileSelectDone = true;
+    isMakeButton = true;
   }
 //------------------------- controller check for tab2----------------------------//
   if(theControlEvent.isFrom("File")){
@@ -275,12 +283,12 @@ void controlEvent(ControlEvent theControlEvent) {
     tab2ExportStatus = true;
     mergeStatus = true;
   }
+  btnClickedFileName = theControlEvent.getController().getName();
 }
 
 public void clear() {
   cp5.get(Textfield.class,"input").clear();
 }
 public void input(String theText) {
-  //println("a textfield event for controller 'input' : "+theText);
   resultSymbolString += theText;
 }
