@@ -14,20 +14,9 @@ PrintWriter output;
 
 static final int offsetX = 200;  //GUI의 width; 
 
-
-//------------------variable for character symbols-----------------------//
-CharSymbol[] symbolArray;
-int[] symbolIndexArray;
-char[] symbolChars;
-int numOfSym = 0;
-String stringResult;
-
-
 //-------------------- variable array to save loaded data----------------// 
 
 char[] dividedChar;
-char[] dividedOriginalText;
-
 
 //------------------ initial parameters and declaration-----------------//
 String result_filepath = "";
@@ -67,6 +56,7 @@ String btnClickedFileName = "";
 String chosenString = "";
 int[][] readFileIndex;
 boolean isBtnSelected = false;
+String finalText ="";
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -122,26 +112,25 @@ void draw()
       int index = processClickedFileName();
       int i = readFileIndex[index][0];
       chosenString = splittedFiles[index][i];
+      finalText += chosenString;
       readFileIndex[index][0]++;
       isBtnSelected  = false;
   }
   
   drawGUI();
   
+  //다 선택을 한 다음에 finish버튼을 누르면....
   if(tab2FinishStatus)
   {
-    numOfSym = resultSymbolString.length();
+    isfileSelectDone = false;
+    //numOfSym = resultSymbolString.length();
   }
-  if(original_filepath!="")
+  if(tab2ExportStatus)
   {
-    setupOriginalText(original_filepath);
-    initSymbolClass();
-    initSymbolIndex();
-    if(tab2ExportStatus&&mergeStatus)
-    {
-      exportToTxt(mergeSymbols());
-    }
+    exportToTxt(finalText);
+    tab2ExportStatus = false;
   }
+
   if(btnStatus==true)
   {
     selectInput("Select a file to process:", "fileSelectedResult");
@@ -166,15 +155,7 @@ void draw()
  
 }
 
-void setupOriginalText(String filename)
-{
-  String[] a = loadStrings(filename);
-  int length = a.length;
-  for(int i=0; i<length; i++)
-  {
-    stringResult += a[i];
-  }
-}
+
 //filename으로 가져와서 그냥 하나의 문단으로 만들기 
 String setupSelectedFiles(String filename)
 {
@@ -215,46 +196,6 @@ int getNumOfSentence(String str)
   return tempString.length;
 }
 
-void initSymbolClass()
-{
-  symbolArray = new CharSymbol[numOfSym];
-  for(int i=0; i<numOfSym; i++)
-  {
-    symbolArray[i] = new CharSymbol(resultSymbolString.charAt(i));
-  }
-}
-
-void initSymbolIndex()
-{
-  symbolIndexArray = new int[numOfSym];
-  int randomValue = 0;
-  for(int i=0; i<numOfSym; i++)
-  {
-    randomValue = (int)random(0,stringResult.length());
-    symbolIndexArray[i] = randomValue;
-  }
-   Arrays.sort(symbolIndexArray);
-}
-String mergeSymbols()
-{
-  String finalString = "";
-  int startIndex =0;
-  int endIndex = 0;
-  int last = stringResult.length();
-    for(int j=0; j<numOfSym; j++)
-    {
-      startIndex = endIndex;
-      endIndex = symbolIndexArray[j];
-      finalString += stringResult.substring(startIndex,endIndex);
-      finalString += symbolArray[j].getChar();
-    }
-     if(endIndex!=last)
-      {
-        endIndex = last;
-        finalString += stringResult.substring(startIndex,endIndex);
-      }
-  return finalString;
-}
 void exportToTxt(String str)
 {
   output = createWriter(timestamp()+".txt");
@@ -288,16 +229,6 @@ int loadTextByChar(String content)
   return 1;
 }
 
-int loadOriginalTextByChar(String content)
-{
-  int length = content.length();
-  dividedOriginalText = new char[length];
-  for(int i=0; i<length; i++)
-  {
-    dividedOriginalText[i] = content.charAt(i);
-  }
-  return 1;
-}
 
 //-------------------- init text / word / char ------------------------//
 
@@ -360,27 +291,6 @@ color hexToRgb(String hexValue)
             Integer.valueOf( subString.substring( 2, 4 ),16),
             Integer.valueOf( subString.substring( 4, 6 ),16) );
   return rgb;
-}
-
-void drawCharByLine()
-{
-  int length = dividedChar.length;
-  int offsetY =20;
-  float totalLength =offsetX;
-  for(int i=0; i<length; i++)
-  {
-    totalLength += charArray[i].getCharWidth();
-    
-    if(totalLength<width-20){
-      charArray[i].drawChar(totalLength,offsetY);
-    }
-    else
-    {
-      offsetY +=(charArray[i].getFontSize())*2;
-      totalLength = offsetX;
-      charArray[i].drawChar(totalLength,offsetY); 
-    }
-  }
 }
 
 void drawCharInArea()
