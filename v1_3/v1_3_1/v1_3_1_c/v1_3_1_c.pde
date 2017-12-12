@@ -135,12 +135,14 @@ void draw()
     resetFileRelatedArray();
     tab2g3btn1.setColorBackground(color(0,255,0));
     isfileSelectDone = false;
+    
   }
   if(tab2ExportStatus)
   {
     exportToTxt(finalText);
     tab2g3btn1.hide();
     tab2ExportStatus = false;
+    finalText = "";
   }
 
   if(btnStatus==true)

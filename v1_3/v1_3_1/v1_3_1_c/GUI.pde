@@ -250,6 +250,7 @@ void hideButtons(int length)
   for(int i=0; i<length; i++)
   {
     fileBtn[i].remove();
+    cp5.remove(fileBtn[i]);
   }
 }
 
