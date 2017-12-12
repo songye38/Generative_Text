@@ -57,6 +57,8 @@ String chosenString = "";
 int[][] readFileIndex;
 boolean isBtnSelected = false;
 String finalText ="";
+boolean isReset = false;
+final int MAX_STR_IN_FILE =1000;
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -66,7 +68,7 @@ void setup()
   selectedFileNames = new String[NUM_OF_FILES][2];
   loadedSelectedFiles = new String[NUM_OF_FILES][1];
   numOfSentence = new int[NUM_OF_FILES][1];
-  splittedFiles = new String[NUM_OF_FILES][1000];
+  splittedFiles = new String[NUM_OF_FILES][MAX_STR_IN_FILE];
   buttonStatusArray = new boolean[NUM_OF_FILES][1];
   readFileIndex = new int[NUM_OF_FILES][1];
   for(int i=0; i<NUM_OF_FILES; i++)
@@ -92,6 +94,9 @@ void draw()
   //하나하나의 파일 별로 배열을 만들어주기 -> 이 배열에 
   if(isfileSelectDone)
   {
+    tab2g1btn.hide();
+    tab2g1btn2.hide();
+    tab2g3btn1.hide();
     for(int i=0; i<numOfSelectedFiles; i++)
     {
       loadedSelectedFiles[i][0] = setupSelectedFiles(selectedFileNames[i][0]);
@@ -119,11 +124,15 @@ void draw()
   
   drawGUI();
   
-  //다 선택을 한 다음에 finish버튼을 누르면....
+  //finish를 눌러서 선택된 파일들이 담긴 배열을 초기화시켜주기 ..
   if(tab2FinishStatus)
   {
+    tab2g1btn.show();
+    tab2g1btn2.show();
+    tab2g3btn1.show();
+    tab2g1list.clear();
+    resetFileRelatedArray();
     isfileSelectDone = false;
-    //numOfSym = resultSymbolString.length();
   }
   if(tab2ExportStatus)
   {
@@ -152,10 +161,31 @@ void draw()
    mergeStatus = false;
    isMakeButton = false;
    btnClickedFileName = "";
- 
+   tab2FinishStatus = false;
 }
 
+void resetFileRelatedArray()
+{
+  for(int i=0; i<numOfSelectedFiles; i++)
+  {
+    selectedFileNames[i][0] = null;
+    selectedFileNames[i][1] = null;
+    loadedSelectedFiles[i][0] ="";
+    resetSplittedFiles(i, numOfSentence[i][0]);
+    numOfSentence[i][0] =0;
+    loadFilesIntoArray(loadedSelectedFiles[i][0],i);
+  }
+  numOfSelectedFiles =0;
+}  
 
+//이렇게 1000개까지 지우는건 진짜 불필요한 일인데......
+void resetSplittedFiles(int index, int length)
+{
+  for(int i=0; i<length; i++)
+  {
+    splittedFiles[index][i] = "";
+  }
+}
 //filename으로 가져와서 그냥 하나의 문단으로 만들기 
 String setupSelectedFiles(String filename)
 {

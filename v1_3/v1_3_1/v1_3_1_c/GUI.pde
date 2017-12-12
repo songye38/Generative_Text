@@ -22,6 +22,7 @@ Button tab2g1btn2;
 Button tab2g3btn1;
 Button tab2g3btn2;
 Accordion accordion2;
+Button tab2g1reset;
 
 //---------------------variable for textarea ----------------//
 Textarea ta;
@@ -149,6 +150,11 @@ void setupGUI() {
                   .setSize(40,40)
                   .moveTo(tab2g1)
                   ;
+   tab2g1reset = cp5.addButton("reset")
+                    .setPosition(110,10)
+                    .setSize(40,40)
+                    .moveTo(tab2g1)
+                    ;
    tab2g1list = cp5.addListBox("fileList")
         .setPosition(10,60)
         .setSize(130,100)
@@ -272,6 +278,9 @@ void controlEvent(ControlEvent theControlEvent) {
     isfileSelectDone = true;
     isMakeButton = true;
   }
+  //  if(theControlEvent.isFrom("reset")){
+  //  isReset = true;
+  //}
 //------------------------- controller check for tab2----------------------------//
   if(theControlEvent.isFrom("File")){
     tab2BtnStatus = true;
