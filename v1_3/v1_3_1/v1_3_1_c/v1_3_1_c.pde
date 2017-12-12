@@ -59,6 +59,7 @@ boolean isBtnSelected = false;
 String finalText ="";
 boolean isReset = false;
 final int MAX_STR_IN_FILE =1000;
+boolean autoStatus = false;
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -97,6 +98,7 @@ void draw()
     tab2g1btn.hide();
     tab2g1btn2.hide();
     tab2g3btn1.hide();
+    tab2g1auto.show();
     for(int i=0; i<numOfSelectedFiles; i++)
     {
       loadedSelectedFiles[i][0] = setupSelectedFiles(selectedFileNames[i][0]);
@@ -112,6 +114,7 @@ void draw()
       isBtnSelected = true;
     }
   }
+  //내가 버튼을 하나씩 눌러서 각각의 텍스트를 합치는 곳 
   if(isBtnSelected)
   {
       int index = processClickedFileName();
@@ -121,6 +124,17 @@ void draw()
       readFileIndex[index][0]++;
       isBtnSelected  = false;
   }
+  //오토 토글을 클릭했을 때
+  //if(autoStatus)
+  //{
+  //   String thisString = "";
+  //  //int index = numOfSelectedFiles;
+  //  int randomIndex = int(random(0,numOfSelectedFiles));
+  //  int i = readFileIndex[randomIndex][0];
+  //  thisString = splittedFiles[randomIndex][i];
+  //  finalText += thisString;
+  //  readFileIndex[randomIndex][0]++;
+  //}
   
   drawGUI();
   
@@ -131,6 +145,7 @@ void draw()
     tab2g1btn2.show();
     tab2g3btn1.show();
     tab2g1list.clear();
+    tab2g1auto.hide();
     hideButtons(numOfSelectedFiles);
     resetFileRelatedArray();
     tab2g3btn1.setColorBackground(color(0,255,0));

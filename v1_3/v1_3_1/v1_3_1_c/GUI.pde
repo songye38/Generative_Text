@@ -17,12 +17,14 @@ Button[] fileBtn;
 
 //---------------------------------variable for tab2----------------------------------//
 Button tab2g1btn;    //file input button
+Toggle tab2g1auto;
 ListBox tab2g1list;
 Button tab2g1btn2;
 Button tab2g3btn1;
 Button tab2g3btn2;
 Accordion accordion2;
 Button tab2g1reset;
+
 
 //---------------------variable for textarea ----------------//
 Textarea ta;
@@ -149,13 +151,16 @@ void setupGUI() {
                   .setSize(40,40)
                   .moveTo(tab2g1)
                   ;
-   //tab2g1reset = cp5.addButton("reset")
-   //                 .setPosition(110,10)
-   //                 .setSize(40,40)
-   //                 .moveTo(tab2g1)
-   //                 ;
+
+  tab2g1auto = cp5.addToggle("auto")
+                 .setPosition(110,10)
+                 .setSize(40,40)
+                 .setValue(false)
+                 .moveTo(tab2g1)
+                 .hide()
+                 ;
    tab2g1list = cp5.addListBox("fileList")
-        .setPosition(10,60)
+        .setPosition(10,70)
         .setSize(130,100)
         .setItemHeight(20)
         .setBarHeight(10)
@@ -285,6 +290,9 @@ void controlEvent(ControlEvent theControlEvent) {
   if(theControlEvent.isFrom("done")){
     isfileSelectDone = true;
     isMakeButton = true;
+  }
+  if(theControlEvent.isFrom("auto")){
+    autoStatus = true;
   }
 //------------------------- controller check for tab2----------------------------//
   if(theControlEvent.isFrom("File")){
