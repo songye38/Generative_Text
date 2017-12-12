@@ -149,11 +149,11 @@ void setupGUI() {
                   .setSize(40,40)
                   .moveTo(tab2g1)
                   ;
-   tab2g1reset = cp5.addButton("reset")
-                    .setPosition(110,10)
-                    .setSize(40,40)
-                    .moveTo(tab2g1)
-                    ;
+   //tab2g1reset = cp5.addButton("reset")
+   //                 .setPosition(110,10)
+   //                 .setSize(40,40)
+   //                 .moveTo(tab2g1)
+   //                 ;
    tab2g1list = cp5.addListBox("fileList")
         .setPosition(10,60)
         .setSize(130,100)
@@ -247,8 +247,6 @@ void makeButtons(int length)
 }
 void hideButtons(int length)
 {
-  println("length :");
-  println(length);
   for(int i=0; i<length; i++)
   {
     fileBtn[i].remove();
@@ -287,9 +285,6 @@ void controlEvent(ControlEvent theControlEvent) {
     isfileSelectDone = true;
     isMakeButton = true;
   }
-  //  if(theControlEvent.isFrom("reset")){
-  //  isReset = true;
-  //}
 //------------------------- controller check for tab2----------------------------//
   if(theControlEvent.isFrom("File")){
     tab2BtnStatus = true;

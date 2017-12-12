@@ -133,11 +133,13 @@ void draw()
     tab2g1list.clear();
     hideButtons(numOfSelectedFiles);
     resetFileRelatedArray();
+    tab2g3btn1.setColorBackground(color(0,255,0));
     isfileSelectDone = false;
   }
   if(tab2ExportStatus)
   {
     exportToTxt(finalText);
+    tab2g3btn1.hide();
     tab2ExportStatus = false;
   }
 
