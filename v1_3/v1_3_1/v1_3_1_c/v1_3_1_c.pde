@@ -131,6 +131,7 @@ void draw()
     tab2g1btn2.show();
     tab2g3btn1.show();
     tab2g1list.clear();
+    hideButtons(numOfSelectedFiles);
     resetFileRelatedArray();
     isfileSelectDone = false;
   }

@@ -34,7 +34,6 @@ void setupGUI() {
 //----------------------------basic setup----------------------------//
  cp5 = new ControlP5(this);
  font = createFont("arial",20);
- fileBtn = new Button[NUM_OF_FILES];
  
 
 //------------------------add two tabs-----------------------------//
@@ -237,12 +236,22 @@ void drawGUI() {
 }
 void makeButtons(int length)
 {
+  fileBtn = new Button[length];
   for(int i=0; i<length; i++)
   {
     fileBtn[i] = cp5.addButton(selectedFileNames[i][1])
          .setPosition(220+(i*80),10)
          .setSize(40,40)
          .moveTo("make");
+  }
+}
+void hideButtons(int length)
+{
+  println("length :");
+  println(length);
+  for(int i=0; i<length; i++)
+  {
+    fileBtn[i].remove();
   }
 }
 
