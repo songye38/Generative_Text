@@ -59,7 +59,7 @@ boolean isBtnSelected = false;
 String finalText ="";
 boolean isReset = false;
 final int MAX_STR_IN_FILE =1000;
-boolean autoStatus = false;
+//boolean autoStatus = false;
 
 //하나의 텍스트를 기준으로 만들기 
 void setup()
@@ -98,7 +98,7 @@ void draw()
     tab2g1btn.hide();
     tab2g1btn2.hide();
     tab2g3btn1.hide();
-    tab2g1auto.show();
+    //tab2g1auto.show();
     for(int i=0; i<numOfSelectedFiles; i++)
     {
       loadedSelectedFiles[i][0] = setupSelectedFiles(selectedFileNames[i][0]);
@@ -141,8 +141,6 @@ void draw()
   //finish를 눌러서 선택된 파일들이 담긴 배열을 초기화시켜주기 ..
   if(tab2FinishStatus)
   {
-    tab2g1btn.show();
-    tab2g1btn2.show();
     tab2g3btn1.show();
     tab2g1list.clear();
     tab2g1auto.hide();
@@ -156,6 +154,8 @@ void draw()
   {
     exportToTxt(finalText);
     tab2g3btn1.hide();
+    tab2g1btn.show();
+    tab2g1btn2.show();
     tab2ExportStatus = false;
     finalText = "";
   }
@@ -194,6 +194,7 @@ void resetFileRelatedArray()
     resetSplittedFiles(i, numOfSentence[i][0]);
     numOfSentence[i][0] =0;
     loadFilesIntoArray(loadedSelectedFiles[i][0],i);
+    readFileIndex[i][0] = 0;
   }
   numOfSelectedFiles =0;
 }  

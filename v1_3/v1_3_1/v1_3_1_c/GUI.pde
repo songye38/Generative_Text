@@ -291,9 +291,9 @@ void controlEvent(ControlEvent theControlEvent) {
     isfileSelectDone = true;
     isMakeButton = true;
   }
-  if(theControlEvent.isFrom("auto")){
-    autoStatus = true;
-  }
+  //if(theControlEvent.isFrom("auto")){
+  //  autoStatus = true;
+  //}
 //------------------------- controller check for tab2----------------------------//
   if(theControlEvent.isFrom("File")){
     tab2BtnStatus = true;
